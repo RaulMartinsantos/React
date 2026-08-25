@@ -83,14 +83,14 @@
             as="button"
             variant="heading"
             className={`
-                    flex items-center justify-center rounded-xl
-                    p-3 cursor-pointer text-(--text)
-                    bg-linear-(--gradient)
-                    hover:bg-linear-(--gradient-hover)
-                    shadow-(--shadow)
-                    ${buttonVariants[variant]}
-                    ${className ? className : ""}
-                    `}
+              p-3 cursor-pointer text-(--text)
+              bg-linear-(--gradient)
+              hover:bg-linear-(--gradient-hover)
+              flex items-center justify-center rounded-xl
+              shadow-(--shadow)
+              ${buttonVariants[variant]}
+              ${className ? className : ""}
+            `}
             {...props}
           >
             {children}
@@ -102,10 +102,10 @@
         return (
           <div
             className={`
-                  bg-(--background) shadow-(--shadow)
-                  rounded-2xl
-                  ${className ? className : ""}
-                `}
+            bg-(--background) shadow-(--shadow)
+            rounded-2xl
+            ${className ? className : ""}
+            `}
           >
             {children}
           </div>
@@ -147,9 +147,24 @@
 
       function CalculatorProvider({ children }) {
         const [history, setHistory] = React.useState([]);
+        const historyStorageKey = "history";
+
+        React.useEffect(() => {
+          const saveHistory = localStorage.getItem(historyStorageKey);
+          setHistory(JSON.parse(saveHistory) || []);
+        }, []);
 
         function updateHistory(operation, parsedResult) {
-          setHistory((prev) => [...prev, `${operation}=${parsedResult}`]);
+          setHistory((prev) => {
+            const UpdatedHistory = [...prev, `${operation}=${parsedResult}`];
+
+            localStorage.setItem(
+              historyStorageKey,
+              JSON.stringify(UpdatedHistory),
+            );
+
+            return UpdatedHistory;
+          });
         }
 
         return (
@@ -159,40 +174,12 @@
         );
       }
 
-      function CalculatorDisplay({ operation, result }) {
-        return (
-          <div
-            className={`
-                     flex flex-col gap-2 px-[1.375rem]
-                     cursor-default select-none
-                    `}
-          >
-            <Text
-              as="div"
-              className={`flex items-center justify-end h-7`}
-              variant="muted"
-            >
-              {result && operation}
-            </Text>
-
-            <div
-              className={`
-                        flex items-center justify-between h-9
-                      `}
-            >
-              <Text variant="muted">=</Text>
-              <Text variant="blast">{result || operation}</Text>
-            </div>
-          </div>
-        );
-      }
-
-      function Calculator() {
-        const [operation, setOperation] = React.useState("");
+      function useCalculator() {
         const [result, setResult] = React.useState("");
+        const [operation, setOperation] = React.useState("");
         const { updateHistory } = React.useContext(CalculatorContext);
 
-        function handleInputClick(input) {
+        function doOperation(input) {
           if (input === "CE") {
             setResult("");
             setOperation(operation.slice(0, -1));
@@ -232,12 +219,54 @@
           setOperation(`${operation}${input}`);
         }
 
+        return {
+          operation,
+          result,
+          doOperation,
+        };
+      }
+
+      function CalculatorDisplay({ operation, result }) {
+        return (
+          <div
+            className={`
+                           flex flex-col gap-2 px-[1.375rem]
+                           cursor-default select-none
+                          `}
+          >
+            <Text
+              as="div"
+              className={`flex items-center justify-end h-7`}
+              variant="muted"
+            >
+              {result && operation}
+            </Text>
+
+            <div
+              className={`
+                              flex items-center justify-between h-9
+                            `}
+            >
+              <Text variant="muted">=</Text>
+              <Text variant="blast">{result || operation}</Text>
+            </div>
+          </div>
+        );
+      }
+
+      function Calculator() {
+        const { operation, result, doOperation } = useCalculator();
+
+        function handleInputClick(input) {
+          doOperation(input);
+        }
+
         return (
           <Card
             className={`
-                  flex flex-col gap-[1.625rem] w-[22.25rem]
-                  pt-14 px-8 pb-8
-                  `}
+            flex flex-col gap-[1.625rem] w-[22.25rem]
+            pt-14 px-8 pb-8
+            `}
           >
             <CalculatorDisplay operation={operation} result={result} />
 
@@ -290,11 +319,11 @@
         return (
           <main
             className={`
-                  py-28 px-4 sm:px-10
-                  flex flex-col sm:flex-row
-                  items-center sm:items-stretch
-                  gap-2
-                  `}
+                        py-28 px-4 sm:px-10
+                        flex flex-col sm:flex-row
+                        items-center sm:items-stretch
+                        gap-2
+                        `}
           >
             <CalculatorProvider>
               <Calculator />
