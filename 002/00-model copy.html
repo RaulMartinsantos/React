@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React testes</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="http://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+      function Test() {
+        const [count, setCount] = React.useState(0);
+        const [err, setErr] = React.useState(false);
+
+        React.useEffect(() => {
+          const timer = setTimeout(() => {
+            setErr(true);
+          }, 2600);
+
+          return () => clearTimeout(timer);
+        }, [count]);
+
+        function handleClick() {
+          setCount((preValue) => preValue + 1);
+          setErr(false);
+        }
+
+        return (
+          <>
+            <button onClick={handleClick}>Teste</button>
+            <p>{count}</p>
+
+            {err && <p>Erro</p>}
+          </>
+        );
+      }
+
+      function App() {
+        return (
+          <main className="p-3">
+            <Test />
+          </main>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
