@@ -37,8 +37,8 @@ function App() {
           <Icon svg={CheckIcon} className="fill-green-base" />
           <Icon svg={PencilIcon} className="fill-green-base" />
           <Icon svg={PlusIcon} className="fill-green-base" />
-          <Icon svg={XIcon} className="fill-green-base" />
-          <Icon svg={SpinnerIcon} className="fill-green-base" animate />
+          <Icon svg={XIcon} />
+          <Icon svg={SpinnerIcon} animate />
         </div>
 
         <div className="flex gap-1 justify-start items-center">
@@ -64,8 +64,8 @@ function App() {
 
         <div>
           <InputCheckbox />
-          
-          <InputCheckbox loading/>
+
+          <InputCheckbox loading />
         </div>
 
         <div>
