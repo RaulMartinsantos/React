@@ -1,13 +1,15 @@
 import Text from "./components/text";
-
 import Icon from "./components/icon";
+import Badge from "./components/badge";
+import Button from "./components/button";
+import ButtonIcon from "./components/button-icon";
+
 import XIcon from "./assets/icons/X-Regular.svg?react";
 import SpinnerIcon from "./assets/icons/spinner.svg?react";
 import PlusIcon from "./assets/icons/Plus-Regular.svg?react";
 import TrashIcon from "./assets/icons/Trash-Regular.svg?react";
 import CheckIcon from "./assets/icons/Check-Regular.svg?react";
 import PencilIcon from "./assets/icons/PencilSimple-Regular.svg?react";
-import Badge from "./components/badge";
 
 function App() {
   return (
@@ -36,6 +38,16 @@ function App() {
       <div>
         <Badge variant={"secondary"}>5</Badge>
         <Badge variant={"primary"}>2 de 5</Badge>
+      </div>
+
+      <div>
+        <Button icon={PlusIcon}>Nova tarefa</Button>
+      </div>
+
+      <div className="flex gap-1">
+        <ButtonIcon icon={TrashIcon} variant={"primary"} />
+        <ButtonIcon icon={TrashIcon} variant={"secondary"} />
+        <ButtonIcon icon={TrashIcon} variant={"tertiary"} />
       </div>
     </div>
   );
