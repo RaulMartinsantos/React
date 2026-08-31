@@ -25,7 +25,7 @@ function Container({
   ...props
 }: ContainerProps) {
   return React.createElement(
-    (as = "div"),
+    as,
     {
       className: containerVariants({ size: "md", className }),
       size,
