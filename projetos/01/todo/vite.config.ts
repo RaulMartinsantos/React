@@ -3,7 +3,6 @@ import babel from "@rolldown/plugin-babel";
 import { defineConfig } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 import svgr from "vite-plugin-svgr";
-
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -12,4 +11,7 @@ export default defineConfig({
     tailwindcss(),
     svgr(),
   ],
+  optimizeDeps: {
+    include: ["use-local-storage"],
+  },
 });
