@@ -1,8 +1,10 @@
-import * as DialogPrimitive from "@radix-ui/react-dialog";
+import React from "react";
 import Card from "./card";
-import cn from "classnames";
 import Text from "./text";
+import cn from "classnames";
 import ButtonIcon from "./button-icon";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+
 import XIcon from "../assets/icons/x.svg?react";
 import Divider from "./divider";
 
@@ -18,18 +20,18 @@ export function DialogOverlay({
 }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
   return (
     <DialogPrimitive.Overlay
+      {...props}
       className={cn(
         `
-      fixed inset-0 z-50 bg-background-secondary/60
-      backdrop-blur-sm
-      data-[state=open]:animate-in
-      data-[state=close]:animate-out
-      data-[state=open]:fade-in-0
-      data-[state=closed]:fade-out-0
-    `,
+        fixed inset-0 z-50 bg-background-secondary/60
+        backdrop-blur-sm
+        data-[state=open]:animate-in
+        data-[state=open]:fade-in-0
+        data-[state=closed]:animate-out
+        data-[state=closed]:fade-out-0
+      `,
         className,
       )}
-      {...props}
     />
   );
 }
@@ -54,8 +56,8 @@ export function DialogContent({
         data-[state=open]:slide-in-from-bottom-[48%]
         data-[state=closed]:animate-out
         data-[state=closed]:fade-out-0
-        data-[state=closed]:slide-out-to-bottom-[48%]
-      `,
+        data-[state=close]:slide-out-to-bottom-[48%]
+        `,
           className,
         )}
         {...props}
@@ -84,10 +86,12 @@ export function DialogHeader({
             {children}
           </Text>
         </DialogPrimitive.Title>
+
         <DialogClose asChild>
           <ButtonIcon icon={XIcon} variant="ghost" />
         </DialogClose>
       </header>
+
       <Divider className="mt-1.5 mb-5" />
     </>
   );

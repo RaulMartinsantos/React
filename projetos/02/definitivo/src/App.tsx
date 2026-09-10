@@ -8,10 +8,20 @@ import ButtonIcon from "./components/button-icon";
 import InputCheckBox from "./components/input-checkbox";
 import ImageFilePreview from "./components/image-preview";
 import InputSingleFile from "./components/input-single-file";
+import {
+  Dialog,
+  DialogBody,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTrigger,
+} from "./components/dialog";
 
 import SearchIcon from "./assets/icons/search.svg?react";
 import ChevronLeftIcon from "./assets/icons/chevron-left.svg?react";
 import ChevronRightIcon from "./assets/icons/chevron-right.svg?react";
+import Text from "./components/text";
 
 export default function App() {
   const form = useForm();
@@ -76,6 +86,36 @@ export default function App() {
           replaceBy={<ImageFilePreview src={fileSource} alt="imagem" />}
           {...form.register("file")}
         />
+      </div>
+
+      <div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>Abrir modal</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>Teste</DialogHeader>
+
+            <DialogBody>
+              <Text as="div" className="mb-4">
+                Teste
+              </Text>
+              <InputSingleFile
+                form={form}
+                allowedExtensions={["png", "jpg", "jpeg", "webp"]}
+                maxFileSizeInMB={50}
+                replaceBy={<ImageFilePreview src={fileSource} alt="imagem" />}
+                {...form.register("file")}
+              />
+            </DialogBody>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="secondary">Cancelar</Button>
+              </DialogClose>
+              <Button variant="primary">Adicionar</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
