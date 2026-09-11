@@ -1,26 +1,27 @@
-import Button from "../components/button";
-import ButtonIcon from "../components/button-icon";
-import ChevronLeftIcon from "../assets/icons/chevron-left.svg?react";
-import ChevronRightIcon from "../assets/icons/chevron-right.svg?react";
-import Badge from "../components/badge";
 import Alert from "../components/alert";
+import Badge from "../components/badge";
+import Button from "../components/button";
+import { useForm } from "react-hook-form";
 import Divider from "../components/divider";
 import InputText from "../components/input-text";
-import SearchIcon from "../assets/icons/search.svg?react";
-import InputCheckbox from "../components/input-checkbox";
+import ButtonIcon from "../components/button-icon";
+import InputCheckBox from "../components/input-checkbox";
+import ImageFilePreview from "../components/image-preview";
 import InputSingleFile from "../components/input-single-file";
-import {useForm} from "react-hook-form";
-import ImagePreview from "../components/image-preview";
 import {
   Dialog,
   DialogBody,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTrigger,
 } from "../components/dialog";
+
+import SearchIcon from "../assets/icons/search.svg?react";
+import ChevronLeftIcon from "../assets/icons/chevron-left.svg?react";
+import ChevronRightIcon from "../assets/icons/chevron-right.svg?react";
 import Text from "../components/text";
-import {DialogClose} from "@radix-ui/react-dialog";
 
 export default function PageComponents() {
   const form = useForm();
@@ -70,11 +71,11 @@ export default function PageComponents() {
       </div>
 
       <div>
-        <InputText icon={SearchIcon} placeholder="Buscar foto" />
+        <InputText placeholder="buscar foto" icon={SearchIcon} />
       </div>
 
       <div>
-        <InputCheckbox />
+        <InputCheckBox />
       </div>
 
       <div>
@@ -82,7 +83,7 @@ export default function PageComponents() {
           form={form}
           allowedExtensions={["png", "jpg", "jpeg", "webp"]}
           maxFileSizeInMB={50}
-          replaceBy={<ImagePreview src={fileSource} alt="Imagem" />}
+          replaceBy={<ImageFilePreview src={fileSource} alt="imagem" />}
           {...form.register("file")}
         />
       </div>
@@ -90,19 +91,20 @@ export default function PageComponents() {
       <div>
         <Dialog>
           <DialogTrigger asChild>
-            <Button>Abrir Modal</Button>
+            <Button>Abrir modal</Button>
           </DialogTrigger>
           <DialogContent>
-            <DialogHeader>Teste dialog</DialogHeader>
+            <DialogHeader>Teste</DialogHeader>
+
             <DialogBody>
               <Text as="div" className="mb-4">
-                Teste conteúdo do dialog
+                Teste
               </Text>
               <InputSingleFile
                 form={form}
                 allowedExtensions={["png", "jpg", "jpeg", "webp"]}
                 maxFileSizeInMB={50}
-                replaceBy={<ImagePreview src={fileSource} alt="Imagem" />}
+                replaceBy={<ImageFilePreview src={fileSource} alt="imagem" />}
                 {...form.register("file")}
               />
             </DialogBody>
@@ -110,8 +112,7 @@ export default function PageComponents() {
               <DialogClose asChild>
                 <Button variant="secondary">Cancelar</Button>
               </DialogClose>
-
-              <Button>Adicionar</Button>
+              <Button variant="primary">Adicionar</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

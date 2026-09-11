@@ -1,22 +1,11 @@
-import Container from "../components/container";
-import AlbumsFilter from "../contexts/albums/components/albums-filter";
-import useAlbums from "../contexts/albums/hooks/use-albums";
-import PhotosList from "../contexts/photos/components/photos-list";
-import usePhotos from "../contexts/photos/hooks/use-photos";
+import Text from "../components/text";
 
-export default function PageHome() {
-  const {albums, isLoadingAlbums} = useAlbums();
-  const {photos, isLoadingPhotos} = usePhotos();
-
+function PageHome() {
   return (
-    <Container>
-      <AlbumsFilter
-        albums={albums}
-        loading={isLoadingAlbums}
-        className="mb-9"
-      />
-
-      <PhotosList photos={photos} loading={isLoadingPhotos} />
-    </Container>
+    <>
+      <Text variant="heading-medium">Pagina inicial</Text>
+    </>
   );
 }
+
+export default PageHome
