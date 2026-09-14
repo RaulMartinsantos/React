@@ -1,8 +1,11 @@
-import type {Album} from "../../albums/models/album";
+import type { Album } from "../../albums/models/album";
 
-export interface Photo {
+interface Photo {
   id: string;
   title: string;
   imageId: string;
   albums: Album[];
 }
+
+
+export type { Photo }

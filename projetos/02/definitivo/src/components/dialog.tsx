@@ -2,17 +2,14 @@ import React from "react";
 import Card from "./card";
 import Text from "./text";
 import cn from "classnames";
+import Divider from "./divider";
 import ButtonIcon from "./button-icon";
+import XIcon from "../assets/icons/x.svg?react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 
-import XIcon from "../assets/icons/x.svg?react";
-import Divider from "./divider";
-
 export const Dialog = DialogPrimitive.Root;
-
-export const DialogTrigger = DialogPrimitive.Trigger;
-
 export const DialogClose = DialogPrimitive.Close;
+export const DialogTrigger = DialogPrimitive.Trigger;
 
 export function DialogOverlay({
   className,

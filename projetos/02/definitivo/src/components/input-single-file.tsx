@@ -1,3 +1,4 @@
+import React from "react";
 import Icon from "./icon";
 import { useWatch } from "react-hook-form";
 import Text, { textVariants } from "./text";
@@ -5,7 +6,6 @@ import { type VariantProps, tv } from "tailwind-variants";
 
 import UploadFileIcon from "../assets/icons/upload-file.svg?react";
 import FileImageIcon from "../assets/icons/image.svg?react";
-import React from "react";
 
 export const inputSingleFileVariants = tv({
   base: `
