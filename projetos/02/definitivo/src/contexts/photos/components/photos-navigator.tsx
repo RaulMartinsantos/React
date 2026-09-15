@@ -1,25 +1,25 @@
-import type React from "react";
+import cx from "classnames";
+import { useNavigate } from "react-router";
+import Button from "../../../components/button";
 import Skeleton from "../../../components/skeleton";
 import ButtonIcon from "../../../components/button-icon";
+
 import ArrowLeftIcon from "../../../assets/icons/chevron-left.svg?react";
 import ArrowRightIcon from "../../../assets/icons/chevron-right.svg?react";
-import Button from "../../../components/button";
-import {useNavigate} from "react-router";
-import cx from "classnames";
 
-interface PhotosNavigatorProps extends React.ComponentProps<"div"> {
-  previousPhotoId?: string;
-  nextPhotoId?: string;
+interface PhotoNavigatorProps extends React.ComponentProps<"div"> {
+  previousPhotosId?: string;
+  nextPhotosId?: string;
   loading?: boolean;
 }
 
-export default function PhotosNavigator({
-  previousPhotoId,
-  nextPhotoId,
+function PhotoNavigator({
+  previousPhotosId,
+  nextPhotosId,
   loading,
   className,
   ...props
-}: PhotosNavigatorProps) {
+}: PhotoNavigatorProps) {
   const navigate = useNavigate();
 
   return (
@@ -29,20 +29,21 @@ export default function PhotosNavigator({
           <ButtonIcon
             icon={ArrowLeftIcon}
             variant="secondary"
-            disabled={!previousPhotoId}
+            disabled={!previousPhotosId}
             onClick={() => {
-              navigate(`/fotos/${previousPhotoId}`);
+              navigate(`/fotos/${previousPhotosId}`);
             }}
           />
+
           <Button
             icon={ArrowRightIcon}
             variant="secondary"
-            disabled={!nextPhotoId}
+            disabled={!nextPhotosId}
             onClick={() => {
-              navigate(`/fotos/${nextPhotoId}`);
+              navigate(`/fotos/${nextPhotosId}`);
             }}
           >
-            Próxima imagem
+            Proxima imagem
           </Button>
         </>
       ) : (
@@ -54,3 +55,5 @@ export default function PhotosNavigator({
     </div>
   );
 }
+
+export default PhotoNavigator;

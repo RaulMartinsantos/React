@@ -1,7 +1,7 @@
-import {tv} from "tailwind-variants";
+import { tv } from "tailwind-variants";
 import ImagePreview from "../../../components/image-preview";
 import React from "react";
-import InputCheckbox from "../../../components/input-checkbox";
+import InputCheckBox from "../../../components/input-checkbox";
 
 export const photoImageSelectableVariants = tv({
   base: "cursor-pointer relative rounded-lg",
@@ -12,13 +12,14 @@ export const photoImageSelectableVariants = tv({
   },
 });
 
-interface PhotoImageSelectableProps
-  extends React.ComponentProps<typeof ImagePreview> {
+interface PhotoImageSelectableProps extends React.ComponentProps<
+  typeof ImagePreview
+> {
   selected?: boolean;
   onSelectImage?: (selected: boolean) => void;
 }
 
-export default function PhotoImageSelectable({
+function PhotoImageSelectable({
   selected,
   className,
   onSelectImage,
@@ -26,7 +27,7 @@ export default function PhotoImageSelectable({
 }: PhotoImageSelectableProps) {
   const [isSelected, setIsSelected] = React.useState(selected);
 
-  function handleSelect() {
+  function handleSelected() {
     const newValue = !isSelected;
 
     setIsSelected(newValue);
@@ -40,13 +41,15 @@ export default function PhotoImageSelectable({
         select: isSelected,
       })}
     >
-      <InputCheckbox
+      <InputCheckBox
         size="sm"
-        defaultChecked={isSelected}
-        onChange={handleSelect}
+        checked={isSelected}
+        onChange={handleSelected}
         className="absolute top-1 left-1"
       />
       <ImagePreview {...props} />
     </label>
   );
 }
+
+export default PhotoImageSelectable;

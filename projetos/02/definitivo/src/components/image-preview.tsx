@@ -1,5 +1,5 @@
 import type React from "react";
-import { tv, cn } from "tailwind-variants";
+import { tv } from "tailwind-variants";
 
 export const imagePreviewVariants = tv({
   base: `

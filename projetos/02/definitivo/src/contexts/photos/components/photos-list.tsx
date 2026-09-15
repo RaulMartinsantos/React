@@ -1,14 +1,14 @@
-import type {Photo} from "../models/photo";
+import type { Photo } from "../models/photo";
 import PhotoWidget from "./photo-widget";
 import Text from "../../../components/text";
 import Skeleton from "../../../components/skeleton";
 
-interface PhotosListProps {
+interface PhotosListsProps {
   photos: Photo[];
   loading?: boolean;
 }
 
-export default function PhotosList({photos, loading}: PhotosListProps) {
+function PhotosList({ photos, loading }: PhotosListsProps) {
   return (
     <div className="space-y-6">
       <Text
@@ -16,7 +16,7 @@ export default function PhotosList({photos, loading}: PhotosListProps) {
         variant="paragraph-large"
         className="flex items-center justify-end gap-1 text-accent-span"
       >
-        Total:{" "}
+        Total:{""}
         {!loading ? (
           <div>{photos.length}</div>
         ) : (
@@ -24,24 +24,25 @@ export default function PhotosList({photos, loading}: PhotosListProps) {
         )}
       </Text>
 
-      {!loading && photos?.length > 0 && (
+      {!loading && photos.length > 0 && (
         <div className="grid grid-cols-5 gap-9">
           {photos.map((photo) => (
-            <PhotoWidget key={photo.id} photo={photo} />
+            <PhotoWidget photo={photo} key={photo.id} />
           ))}
         </div>
       )}
       {loading && (
         <div className="grid grid-cols-5 gap-9">
-          {Array.from({length: 10}).map((_, index) => (
+          {Array.from({ length: 10 }).map((_, index) => (
             <PhotoWidget
-              key={`photo-loading-${index}`}
+              key={`Photo-loading-${index}`}
               photo={{} as Photo}
               loading
             />
           ))}
         </div>
       )}
+
       {!loading && photos.length === 0 && (
         <div className="flex justify-center items-center h-full">
           <Text variant="paragraph-large">Nenhuma foto encontrada</Text>
@@ -50,3 +51,5 @@ export default function PhotosList({photos, loading}: PhotosListProps) {
     </div>
   );
 }
+
+export default PhotosList;
