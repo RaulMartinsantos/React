@@ -1,7 +1,6 @@
 import Text from "../../../components/text";
 import Button from "../../../components/button";
 import InputText from "../../../components/input-text";
-import type { Photo } from "../../photos/models/photo";
 import SelectCheckboxIllustration from "../../../assets/images/select-checkbox.svg?react";
 import {
   Dialog,
@@ -13,37 +12,14 @@ import {
   DialogTrigger,
 } from "../../../components/dialog";
 import Skeleton from "../../../components/skeleton";
-import ImagePreview from "../../../components/image-preview";
+import usePhotos from "../../photos/hooks/use-photos";
 import PhotoImageSelectable from "../../photos/components/photo-image-selectable";
 interface AlbumNewDialogProps {
   trigger: React.ReactNode;
 }
 
 function AlbumNewDialog({ trigger }: AlbumNewDialogProps) {
-  //MOCK usar API QUANDO PROTO
-  const isLoadingPhotos = false;
-  const photos: Photo[] = [
-    {
-      id: "12345",
-      title: "Olá mundo",
-      imageId: "portrait-tower.png",
-      albums: [
-        { id: "1234", title: "album 1" },
-        { id: "123", title: "album 2" },
-        { id: "12", title: "album 3" },
-      ],
-    },
-    {
-      id: "12345",
-      title: "Olá mundo",
-      imageId: "portrait-tower.png",
-      albums: [
-        { id: "1234", title: "album 1" },
-        { id: "123", title: "album 2" },
-        { id: "12", title: "album 3" },
-      ],
-    },
-  ];
+  const { photos, isLoadingPhotos } = usePhotos();
 
   function handleTogglePhoto(selected: boolean, photoId: string) {
     console.log(selected, photoId);
@@ -68,7 +44,7 @@ function AlbumNewDialog({ trigger }: AlbumNewDialogProps) {
                   <PhotoImageSelectable
                     imageClassNamePreview="h-20 w-20"
                     key={`photos-${photo.id}`}
-                    src={`/images/${photo.imageId}`}
+                    src={`${import.meta.env.VITE_IMAGES_URL}/${photo.imageId}`}
                     title={photo.title}
                     selected
                     onSelectImage={(selected) =>

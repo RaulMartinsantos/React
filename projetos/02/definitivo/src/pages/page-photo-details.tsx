@@ -1,15 +1,17 @@
 import Text from "../components/text";
+import Button from "../components/button";
 import Skeleton from "../components/skeleton";
 import Container from "../components/container";
+import ImagePreview from "../components/image-preview";
+import useAlbums from "../contexts/albums/hooks/use-albums";
 import type { Photo } from "../contexts/photos/models/photo";
 import PhotoNavigator from "../contexts/photos/components/photos-navigator";
-import ImagePreview from "../components/image-preview";
-import Button from "../components/button";
 import AlbumsListSelectable from "../contexts/albums/components/albums-list-selectable";
 
 function PagePhotoDetails() {
   //Apenas para teste de mock
   const isLoadingPhoto = false;
+  const {albums, isLoadingAlbums} = useAlbums()
   const photo = {
     id: "12345",
     title: "Olá mundo",
@@ -60,12 +62,8 @@ function PagePhotoDetails() {
           </Text>
           <AlbumsListSelectable
             photo={photo}
-            albums={[
-              { id: "1234", title: "album 1" },
-              { id: "123", title: "album 2" },
-              { id: "12", title: "album 3" },
-            ]}
-            loading={isLoadingPhoto}
+            albums={albums}
+            loading={isLoadingAlbums}
           />
         </div>
       </div>
