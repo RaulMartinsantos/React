@@ -41,7 +41,6 @@ interface InputSingFileProps
   extends
     VariantProps<typeof inputSingleFileVariants>,
     Omit<React.ComponentProps<"input">, "size"> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: any;
   allowedExtensions: string[];
   maxFileSizeInMB: number;
@@ -129,7 +128,7 @@ function InputSingleFile({
             )}
             {error && (
               <Text variant="label-small" className="text-accent-red">
-                Campo de erro
+                {error}
               </Text>
             )}
           </div>

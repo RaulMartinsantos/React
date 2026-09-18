@@ -1,39 +1,39 @@
 import Text from "../components/text";
+import { useParams } from "react-router";
 import Button from "../components/button";
 import Skeleton from "../components/skeleton";
 import Container from "../components/container";
 import ImagePreview from "../components/image-preview";
+import usePhoto from "../contexts/photos/hooks/use-photo";
 import useAlbums from "../contexts/albums/hooks/use-albums";
 import type { Photo } from "../contexts/photos/models/photo";
 import PhotoNavigator from "../contexts/photos/components/photos-navigator";
 import AlbumsListSelectable from "../contexts/albums/components/albums-list-selectable";
 
 function PagePhotoDetails() {
-  //Apenas para teste de mock
-  const isLoadingPhoto = false;
-  const {albums, isLoadingAlbums} = useAlbums()
-  const photo = {
-    id: "12345",
-    title: "Olá mundo",
-    imageId: "portrait-shadow.png",
-    albums: [
-      { id: "1234", title: "album 1" },
-      { id: "123", title: "album 2" },
-      { id: "12", title: "album 3" },
-    ],
-  } as Photo;
+  const { id } = useParams();
+  const { photo, previousPhotoId, nextPhotoId, isLoadingPhoto } = usePhoto(id);
+  const { albums, isLoadingAlbums } = useAlbums();
+
+  if (!isLoadingPhoto && !photo) {
+    return <div>Foto não encontrada</div>;
+  }
 
   return (
     <Container>
       <header className="flex items-center justify-between gap-8 mb-8">
         {!isLoadingPhoto ? (
           <Text as="h2" variant="heading-large">
-            {photo.title}
+            {photo?.title}
           </Text>
         ) : (
           <Skeleton className="w-48 h-8" />
         )}
-        <PhotoNavigator loading={isLoadingPhoto} />
+        <PhotoNavigator
+          nextPhotosId={nextPhotoId}
+          previousPhotosId={previousPhotoId}
+          loading={isLoadingPhoto}
+        />
       </header>
 
       <div className="grid grid-cols-[21rem_1fr] gap-24">
@@ -41,8 +41,8 @@ function PagePhotoDetails() {
           {!isLoadingPhoto ? (
             <>
               <ImagePreview
-                src={`/images/${photo?.imageId}`}
-                title={photo.title}
+                src={`${import.meta.env.VITE_IMAGES_URL}/${photo?.imageId}`}
+                title={photo?.title}
                 imageClassNamePreview="h-[21rem]"
               />
             </>
@@ -61,7 +61,7 @@ function PagePhotoDetails() {
             Álbuns
           </Text>
           <AlbumsListSelectable
-            photo={photo}
+            photo={photo as Photo}
             albums={albums}
             loading={isLoadingAlbums}
           />

@@ -1,4 +1,3 @@
-import Button from "../../../components/button";
 import {
   Dialog,
   DialogTrigger,
@@ -8,77 +7,99 @@ import {
   DialogFooter,
   DialogClose,
 } from "../../../components/dialog";
-import InputText from "../../../components/input-text";
-import Alert from "../../../components/alert";
-import InputSingleFile from "../../../components/input-single-file";
-import ImagePreview from "../../../components/image-preview";
-import Text from "../../../components/text";
-import Skeleton from "../../../components/skeleton";
 import { useForm } from "react-hook-form";
+import Text from "../../../components/text";
+import Alert from "../../../components/alert";
+import Button from "../../../components/button";
+import Skeleton from "../../../components/skeleton";
+import { zodResolver } from "@hookform/resolvers/zod";
 import useAlbums from "../../albums/hooks/use-albums";
+import InputText from "../../../components/input-text";
+import ImagePreview from "../../../components/image-preview";
+import InputSingleFile from "../../../components/input-single-file";
+import { photoNewFormSchema, type PhotoNewFormSchema } from "../schemas";
 
 interface PhotoNewDialogProps {
   trigger: React.ReactNode;
 }
 
 function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
-  const form = useForm();
-  const {albums, isLoadingAlbums} = useAlbums()
- 
+  const form = useForm<PhotoNewFormSchema>({
+    resolver: zodResolver(photoNewFormSchema),
+  });
 
+  const { albums, isLoadingAlbums } = useAlbums();
+
+  const file = form.watch("file");
+  const fileSource = file?.[0] ? URL.createObjectURL(file[0]) : undefined;
+
+  function handleSubmit(payload: PhotoNewFormSchema) {
+    console.log(payload);
+  }
 
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
 
       <DialogContent>
-        <DialogHeader>Adicionar foto</DialogHeader>
+        <form onSubmit={form.handleSubmit(handleSubmit)}>
+          <DialogHeader>Adicionar foto</DialogHeader>
 
-        <DialogBody className="flex flex-col gap-5">
-          <InputText placeholder="Adicione um título" maxLength={255} />
+          <DialogBody className="flex flex-col gap-5">
+            <InputText
+              placeholder="Adicione um título"
+              maxLength={255}
+              error={form.formState.errors.title?.message}
+              {...form.register("title")}
+            />
 
-          <Alert>
-            Tamanho máximo 50 mb
-            <br />
-            Você pode selecionar arquivos em PNG, JPG ou JPEG
-          </Alert>
+            <Alert>
+              Tamanho máximo 50 mb
+              <br />
+              Você pode selecionar arquivos em PNG, JPG ou JPEG
+            </Alert>
 
-          <InputSingleFile
-            form={form}
-            allowedExtensions={["png", "jpg", "jpeg"]}
-            maxFileSizeInMB={50}
-            replaceBy={<ImagePreview className="w-full h-56" />}
-          />
+            <InputSingleFile
+              form={form}
+              allowedExtensions={["png", "jpg", "jpeg"]}
+              maxFileSizeInMB={50}
+              replaceBy={
+                <ImagePreview src={fileSource} className="w-full h-56" />
+              }
+              error={form.formState.errors.file?.message}
+              {...form.register("file")}
+            />
 
-          <div className="space-y-3">
-            <Text variant="label-small">Selecionar álbuns</Text>
-            <div className="flex flex-wrap gap-3">
-              {!isLoadingAlbums
-                ? albums.length > 0 &&
-                  albums.map((album) => (
-                    <Button
-                      variant="ghost"
-                      key={album.id}
-                      size={"sm"}
-                      className="truncate"
-                    >
-                      {album.title}
-                    </Button>
-                  ))
-                : Array.from({ length: 5 }).map((_, index) => (
-                    <Skeleton className="w-28 h-7" key={`album-${index}`} />
-                  ))}
+            <div className="space-y-3">
+              <Text variant="label-small">Selecionar álbuns</Text>
+              <div className="flex flex-wrap gap-3">
+                {!isLoadingAlbums
+                  ? albums.length > 0 &&
+                    albums.map((album) => (
+                      <Button
+                        variant="ghost"
+                        key={album.id}
+                        size={"sm"}
+                        className="truncate"
+                      >
+                        {album.title}
+                      </Button>
+                    ))
+                  : Array.from({ length: 5 }).map((_, index) => (
+                      <Skeleton className="w-28 h-7" key={`album-${index}`} />
+                    ))}
+              </div>
             </div>
-          </div>
-        </DialogBody>
+          </DialogBody>
 
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="secondary">Cancelar</Button>
-          </DialogClose>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="secondary">Cancelar</Button>
+            </DialogClose>
 
-          <Button>Adicionar</Button>
-        </DialogFooter>
+            <Button type="submit">Adicionar</Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
