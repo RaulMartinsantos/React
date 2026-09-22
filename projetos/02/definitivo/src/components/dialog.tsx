@@ -10,6 +10,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 export const Dialog = DialogPrimitive.Root;
 export const DialogClose = DialogPrimitive.Close;
 export const DialogTrigger = DialogPrimitive.Trigger;
+export const DialogDescription = DialogPrimitive.Description;
 
 export function DialogOverlay({
   className,

@@ -1,3 +1,4 @@
+import { Toaster } from "sonner";
 import PageHome from "./pages/page-home";
 import LayoutMain from "./pages/layout-main";
 import PageComponents from "./pages/page-components";
@@ -12,6 +13,7 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <NuqsAdapter>
+        <Toaster position="bottom-center" />
         <BrowserRouter>
           <Routes>
             <Route element={<LayoutMain />}>

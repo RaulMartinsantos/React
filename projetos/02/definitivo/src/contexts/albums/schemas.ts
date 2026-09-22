@@ -1,8 +1,10 @@
-import {z} from "zod";
+import { z } from "zod";
 
-export const albumNewFormSchema = z.object({
-  title: z.string().min(1, {message: "Campo obrigatório"}).max(255),
+const newFormSchema = z.object({
+  title: z.string().trim().min(1, "Adicione um titulo").max(255),
   photosIds: z.array(z.string().uuid()).optional(),
 });
 
-export type AlbumNewFormSchema = z.infer<typeof albumNewFormSchema>;
+export type AlbumNewFormSchema = z.infer<typeof newFormSchema>;
+
+export default newFormSchema;

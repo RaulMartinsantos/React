@@ -1,9 +1,11 @@
-import type { Album } from "../models/album";
-import type { Photo } from "../../photos/models/photo";
+import React from "react";
 import Text from "../../../components/text";
-import InputCheckBox from "../../../components/input-checkbox";
+import type { Album } from "../models/album";
 import Divider from "../../../components/divider";
 import Skeleton from "../../../components/skeleton";
+import type { Photo } from "../../photos/models/photo";
+import InputCheckBox from "../../../components/input-checkbox";
+import usePhotoAlbums from "../../photos/hooks/use-photo-albums";
 
 interface AlbumsListSelectableProps {
   loading?: boolean;
@@ -16,37 +18,45 @@ function AlbumsListSelectable({
   photo,
   loading,
 }: AlbumsListSelectableProps) {
+  const { mangePhotoOnAlbum } = usePhotoAlbums();
+  const [isUpdatingPhoto, setIsUpdatingPhoto] = React.useTransition();
+
   function isChecked(albumId: string) {
-    return photo?.albums?.some((album) => album.id === albumId);
+    return photo?.albums?.some((album) => album.id === albumId) ?? false;
   }
 
   function handlePhotoOnAlbums(albumId: string) {
+    const currentAlbums = photo?.albums || [];
     let albumsIds = [];
 
     if (isChecked(albumId)) {
-      albumsIds = photo.albums
+      albumsIds = currentAlbums
         .filter((album) => album.id !== albumId)
         .map((album) => album.id);
     } else {
-      albumsIds = [...photo.albums.map((album) => album.id)];
+      albumsIds = [...currentAlbums.map((album) => album.id), albumId];
     }
 
-    console.log(albumsIds);
+    setIsUpdatingPhoto(async () => {
+      await mangePhotoOnAlbum(photo.id, albumsIds);
+    });
   }
 
   return (
     <ul>
       {!loading &&
+        photo &&
         albums?.length > 0 &&
         albums.map((album, index) => (
           <li key={album.id}>
-            <div className="flex items-center justify-between  gap-1">
+            <div className="flex items-center justify-between gap-1">
               <Text variant="paragraph-large" className="truncate">
                 {album.title}
               </Text>
               <InputCheckBox
-                defaultChecked={isChecked(album.id)}
-                onClick={() => handlePhotoOnAlbums(album.id)}
+                checked={isChecked(album.id)}
+                onChange={() => handlePhotoOnAlbums(album.id)}
+                disabled={isUpdatingPhoto}
               />
             </div>
             {index !== albums.length - 1 && <Divider className="mt-4 mb-4" />}

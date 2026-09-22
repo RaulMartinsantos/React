@@ -1,19 +1,19 @@
-import {toast} from "sonner";
-import type {AlbumNewFormSchema} from "../schemas";
-import {api} from "../../../helpers/api";
-import type {Album} from "../models/album";
-import {useQueryClient} from "@tanstack/react-query";
+import { toast } from "sonner";
+import { api } from "../../../helpers/api";
+import type { Album } from "../models/album";
+import type { AlbumNewFormSchema } from "../schemas";
 import usePhotos from "../../photos/hooks/use-photos";
+import { useQueryClient } from "@tanstack/react-query";
 import usePhotoAlbums from "../../photos/hooks/use-photo-albums";
 
-export default function useAlbum() {
+function useAlbum() {
   const queryClient = useQueryClient();
-  const {photos} = usePhotos();
-  const {managePhotoOnAlbum} = usePhotoAlbums();
+  const { photos } = usePhotos();
+  const { mangePhotoOnAlbum } = usePhotoAlbums();
 
   async function createAlbum(payload: AlbumNewFormSchema) {
     try {
-      const {data: album} = await api.post<Album>("/albums", {
+      const { data: album } = await api.post<Album>("/albums", {
         title: payload.title,
       });
 
@@ -22,21 +22,26 @@ export default function useAlbum() {
           payload.photosIds.map((photoId) => {
             const photoAlbumsIds =
               photos
-                .find((photo) => photo.id === photoId)
+                .find((photo) => (photo.id = photoId))
                 ?.albums?.map((album) => album.id) || [];
 
-            return managePhotoOnAlbum(photoId, [...photoAlbumsIds, album.id]);
-          })
+            return mangePhotoOnAlbum(photoId, [...photoAlbumsIds, album.id]);
+          }),
         );
       }
 
-      queryClient.invalidateQueries({queryKey: ["albums"]});
-      queryClient.invalidateQueries({queryKey: ["photos"]});
+      queryClient.invalidateQueries({
+        queryKey: ["albums"],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["photos"],
+      });
 
       toast.success("Álbum criado com sucesso");
-    } catch (error) {
+    } catch (err) {
       toast.error("Erro ao criar álbum");
-      throw error;
+      throw err;
     }
   }
 
@@ -44,3 +49,5 @@ export default function useAlbum() {
     createAlbum,
   };
 }
+
+export default useAlbum;
