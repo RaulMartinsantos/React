@@ -13,11 +13,22 @@ import Button from "../../../components/button";
 interface DeleteConfirmationDialogProps {
   children: React.ReactNode;
   onDelete: () => void;
-}
+  confirmDeleteButtonProps: Omit<
+    React.ComponentProps<typeof Button>,
+    "children"
+  > & {
+    children: React.ReactNode;
+  };
+  headerTextDeleteProps: React.ComponentProps<typeof Text>;
 
+  descriptionTextDeleteProps: React.ComponentProps<typeof Text>;
+}
 function DeleteConfirmationDialog({
   children,
   onDelete,
+  confirmDeleteButtonProps,
+  headerTextDeleteProps,
+  descriptionTextDeleteProps,
 }: DeleteConfirmationDialogProps) {
   return (
     <Dialog>
@@ -26,19 +37,19 @@ function DeleteConfirmationDialog({
       </DialogTrigger>
 
       <DialogContent>
-        <DialogHeader>Tem certeza que deseja excluir a foto?</DialogHeader>
-        <DialogDescription>
-          <Text>
-            A foto será permanentemente excluída essa ação não pode ser desfeita
-          </Text>
+        <DialogHeader {...headerTextDeleteProps}></DialogHeader>
+        <DialogDescription {...descriptionTextDeleteProps}>
+          <Text>{descriptionTextDeleteProps.children}</Text>
         </DialogDescription>
         <DialogFooter>
           <DialogClose asChild>
             <Button>Cancelar</Button>
           </DialogClose>
-          <Button variant="destructive" onClick={onDelete}>
-            Deletar foto
-          </Button>
+          <Button
+            variant="destructive"
+            onClick={onDelete}
+            {...confirmDeleteButtonProps}
+          ></Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

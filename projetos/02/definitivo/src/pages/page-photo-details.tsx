@@ -1,7 +1,6 @@
 import React from "react";
 import Text from "../components/text";
 import { useParams } from "react-router";
-import Button from "../components/button";
 import Skeleton from "../components/skeleton";
 import Container from "../components/container";
 import ImagePreview from "../components/image-preview";
@@ -60,7 +59,22 @@ function PagePhotoDetails() {
             <Skeleton className="h-[21rem]" />
           )}
           {!isLoadingPhoto ? (
-            <DeleteConfirmationDialog onDelete={handleDeletePhoto}>
+            <DeleteConfirmationDialog
+              onDelete={handleDeletePhoto}
+              headerTextDeleteProps={{
+                children: "Tem certeza que deseja excluir essa foto?",
+              }}
+              descriptionTextDeleteProps={{
+                children:
+                  "Tem certeza que deseja excluir a foto? essa ação é irreversível ",
+              }}
+              confirmDeleteButtonProps={{
+                children: isDeletingPhoto
+                  ? "Deletando foto..."
+                  : "Deletar conta",
+                disabled: isDeletingPhoto,
+              }}
+            >
               Deletar foto
             </DeleteConfirmationDialog>
           ) : (
