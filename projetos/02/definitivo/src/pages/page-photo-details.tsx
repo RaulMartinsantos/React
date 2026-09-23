@@ -10,6 +10,7 @@ import useAlbums from "../contexts/albums/hooks/use-albums";
 import type { Photo } from "../contexts/photos/models/photo";
 import PhotoNavigator from "../contexts/photos/components/photos-navigator";
 import AlbumsListSelectable from "../contexts/albums/components/albums-list-selectable";
+import DeleteConfirmationDialog from "../contexts/photos/components/delete-confirmation";
 
 function PagePhotoDetails() {
   const { id } = useParams();
@@ -59,9 +60,9 @@ function PagePhotoDetails() {
             <Skeleton className="h-[21rem]" />
           )}
           {!isLoadingPhoto ? (
-            <Button variant="destructive" onClick={handleDeletePhoto}>
-              {isDeletingPhoto ? "Excluindo..." : " Excluir"}
-            </Button>
+            <DeleteConfirmationDialog onDelete={handleDeletePhoto}>
+              Deletar foto
+            </DeleteConfirmationDialog>
           ) : (
             <Skeleton className="w-20 h-10" />
           )}

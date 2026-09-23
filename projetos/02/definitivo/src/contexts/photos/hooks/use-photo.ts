@@ -43,6 +43,7 @@ function usePhoto(id?: string) {
       );
 
       if (payload.albumsIds && payload.albumsIds.length > 0) {
+        await mangePhotoOnAlbum(photo.id, payload.albumsIds);
         await api.put(`/photos/${photo.id}/albums`, {
           albumsIds: payload.albumsIds,
         });

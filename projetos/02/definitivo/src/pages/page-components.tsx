@@ -22,6 +22,7 @@ import SearchIcon from "../assets/icons/search.svg?react";
 import ChevronLeftIcon from "../assets/icons/chevron-left.svg?react";
 import ChevronRightIcon from "../assets/icons/chevron-right.svg?react";
 import Text from "../components/text";
+import DeleteConfirmationDialog from "../contexts/photos/components/delete-confirmation";
 
 export default function PageComponents() {
   const form = useForm();
@@ -116,6 +117,12 @@ export default function PageComponents() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+      </div>
+
+      <div>
+        <DeleteConfirmationDialog onDelete={() => alert("Funciona!")}>
+          Dialog de confirmação de exclusão
+        </DeleteConfirmationDialog>
       </div>
     </div>
   );
