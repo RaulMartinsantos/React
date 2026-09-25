@@ -1,12 +1,10 @@
 import styles from "./styles.module.css";
 
-type Props = React.ComponentProps<"button"> & {
-  name: string;
-};
+interface ButtonProps extends React.ComponentProps<"button"> {}
 
-function Button({ name, ...rest }: Props) {
+function Button({ name, ...props }: ButtonProps) {
   return (
-    <button className={styles.container} {...rest}>
+    <button className={styles.container} {...props}>
       <span>{name}</span>
     </button>
   );
