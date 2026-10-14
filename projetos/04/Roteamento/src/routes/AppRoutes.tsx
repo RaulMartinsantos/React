@@ -1,4 +1,3 @@
-import App from "../App";
 import Home from "../pages/Home";
 import Details from "../pages/details";
 import Products from "../pages/Products";
