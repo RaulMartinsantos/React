@@ -2,9 +2,9 @@ interface inputProps extends React.ComponentProps<"input"> {
   legend?: string;
 }
 
-function Input({ legend, type = "text", ...props }: inputProps) {
+function Input({ legend, ...props }: inputProps) {
   return (
-    <fieldset className="flex flex-1 max-h-20 text-gray-200 focus-within:text-green-100">
+    <fieldset className="flex flex-1 max-h-20 text-gray-200 focus-within:text-green-100 mt-6">
       {legend && (
         <legend className="uppercase text-xxs mb-2 text-inherit">
           {legend}
@@ -12,7 +12,6 @@ function Input({ legend, type = "text", ...props }: inputProps) {
       )}
 
       <input
-        type={type}
         className={`
           w-full h-12 rounded-lg border border-gray-300 px-4 
           text-sm text-gray-100 bg-transparent outline-none 
