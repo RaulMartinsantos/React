@@ -2,6 +2,7 @@ import { useState } from "react";
 import Input from "../components/Input";
 import Select from "../components/Select";
 import CATEGORIES, { CATEGORIES_KEYS } from "../utils/categories";
+import Upload from "../components/upload";
 
 function Refund() {
   const [category, setCategory] = useState("");
@@ -33,10 +34,9 @@ function Refund() {
               </option>
             ))}
           </Select>
-          <Input 
-            legend="valor"
-          />
+          <Input legend="valor" />
         </div>
+        <Upload legend="comprovante" />
       </header>
     </form>
   );
