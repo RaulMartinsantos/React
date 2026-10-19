@@ -22,7 +22,6 @@ function Select({ legend, children, ...props }: SelectProps) {
         text-gray-100 bg-transparent outline-none focus:border-2 
         focus:border-green-100 placeholder-gray-300
       `}
-        value=""
         {...props}
       >
         <option value="" disabled hidden>

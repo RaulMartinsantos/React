@@ -1,7 +1,10 @@
+import { useState } from "react";
 import Input from "../components/Input";
 import Select from "../components/Select";
+import CATEGORIES, { CATEGORIES_KEYS } from "../utils/categories";
 
 function Refund() {
+  const [category, setCategory] = useState("");
   return (
     <form
       className={`
@@ -17,9 +20,23 @@ function Refund() {
           Dados da despesa para solicitar reembolso
         </p>
         <Input required legend="nome da solicitação" />
-        <Select legend="Categoria">
-          <option>teste</option>
-        </Select>
+
+        <div className="flex justify-between gap-4 items-center">
+          <Select
+            legend="Categoria"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            {CATEGORIES_KEYS.map((category) => (
+              <option key={category} value={category}>
+                {CATEGORIES[category].name}
+              </option>
+            ))}
+          </Select>
+          <Input 
+            legend="valor"
+          />
+        </div>
       </header>
     </form>
   );
