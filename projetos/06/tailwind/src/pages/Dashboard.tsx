@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import SearchSvg from "../assets/search.svg";
 
 function Dashboard() {
   const [name, setName] = useState("");
@@ -26,7 +27,9 @@ function Dashboard() {
           onChange={(e) => setName(e.target.value)}
         />
 
-        <Button>Teste</Button>
+        <Button variant="icon" type="submit">
+          <img src={SearchSvg} alt="ícone de pesquisa" className="w-5" />
+        </Button>
       </form>
     </div>
   );
