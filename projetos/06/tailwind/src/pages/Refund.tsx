@@ -18,7 +18,7 @@ function Refund() {
   function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     console.log(name, amount, category, isLoading, filename);
-    navigate("/confirm", { state: { fromSubmit: true } });
+    navigate("/confirm", { state: { FromSubmit: true } });
   }
 
   return (
