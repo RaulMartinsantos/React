@@ -3,13 +3,15 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import SearchSvg from "../assets/search.svg";
 import CATEGORIES from "../utils/categories";
+import Pagination from "../components/Pagination";
+import { formatCurrency } from "../utils/formatCurrency";
 import RefundItem, { type RefundItemProps } from "../components/RefundItem";
 
 const refund_example: RefundItemProps = {
   id: "123",
   name: "Raul",
   category: "Alimentação",
-  amount: "12,99",
+  amount: formatCurrency(12.99),
   categoryImg: CATEGORIES["food"].icon,
 };
 
@@ -58,6 +60,11 @@ function Dashboard() {
         <RefundItem data={refund_example} />
         <RefundItem data={refund_example} />
       </div>
+
+      <Pagination 
+        current={1}
+        total={10}
+      />
     </div>
   );
 }
