@@ -1,4 +1,4 @@
-import uploadSvg from "../assets/file.svg";
+import { FilePlusCorner } from "lucide-react";
 
 interface UploadProps extends React.ComponentProps<"input"> {
   legend?: string;
@@ -33,7 +33,7 @@ function Upload({ filename = null, legend, ...props }: UploadProps) {
             hover:bg-green-200 transition ease-linear
           `}
         >
-          <img src={uploadSvg} alt="ícone de upload" className="w-6 h-6" />
+          <FilePlusCorner color="white" className="w-6 h-6" />
         </label>
       </div>
     </div>

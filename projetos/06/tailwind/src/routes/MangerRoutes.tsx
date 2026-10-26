@@ -1,3 +1,4 @@
+import Refund from "../pages/Refund";
 import NotFound from "../pages/NotFound";
 import Dashboard from "../pages/Dashboard";
 import { Route, Routes } from "react-router";
@@ -8,6 +9,7 @@ function ManagerRoutes() {
     <Routes>
       <Route path="/" element={<AppLayout />}>
         <Route index element={<Dashboard />} />
+        <Route path="/refund/:id" element={<Refund />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

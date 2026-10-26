@@ -1,29 +1,35 @@
+import { Link } from "react-router";
+import type { LucideIcon } from "lucide-react";
+
 export type RefundItemProps = {
   id: string;
   name: string;
   category: string;
   amount: string;
-  categoryImg: string;
+  categoryImg: LucideIcon;
 };
 
-interface LinkProps extends React.ComponentProps<"a"> {
+interface LinkProps extends Omit<React.ComponentProps<typeof Link>, "to"> {
   data: RefundItemProps;
+  to: string;
 }
 
-function RefundItem({ data, ...props }: LinkProps) {
+function RefundItem({ data, to, className, ...props }: LinkProps) {
+  const CategoryIcon = data.categoryImg;
+
   return (
-    <a
-      href=""
+    <Link
+      to={to}
       {...props}
       className={`
       flex items-center gap-3 hover:bg-green-100/5
       cursor-pointer rounded-md p-2
+      ${className ?? ""}
     `}
     >
-      <img
-        src={data.categoryImg}
-        alt="ícone da categoria"
-        className="w-6 h-8"
+      <CategoryIcon
+        size="30px"
+        className="text-green-100 bg-gray-300 rounded-lg p-1"
       />
 
       <div className="flex flex-col flex-1">
@@ -34,7 +40,7 @@ function RefundItem({ data, ...props }: LinkProps) {
         <small className="font-normal text-gray-200">R$</small>
         {data.amount}
       </span>
-    </a>
+    </Link>
   );
 }
 

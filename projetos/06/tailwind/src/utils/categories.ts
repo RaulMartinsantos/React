@@ -1,29 +1,25 @@
-import foodSvg from "../assets/food.svg";
-import othersSvg from "../assets/thumbtack.svg";
-import serviceSvg from "../assets/thumbtack.svg";
-import transportSvg from "../assets/transport.svg";
-import accommodationSvg from "../assets/accommodation.svg";
+import { Utensils, Pin, BriefcaseBusiness, Car, House } from "lucide-react";
 
 const CATEGORIES = {
   food: {
     name: "Alimentação",
-    icon: foodSvg,
+    icon: Utensils,
   },
   other: {
     name: "Outros",
-    icon: othersSvg,
+    icon: Pin,
   },
   service: {
     name: "Serviços",
-    icon: serviceSvg,
+    icon: BriefcaseBusiness,
   },
   transport: {
     name: "Transporte",
-    icon: transportSvg,
+    icon: Car,
   },
   accommodation: {
     name: "Acomodação",
-    icon: accommodationSvg,
+    icon: House,
   },
 };
 
@@ -31,5 +27,4 @@ export const CATEGORIES_KEYS = Object.keys(CATEGORIES) as Array<
   keyof typeof CATEGORIES
 >;
 
-
-export default CATEGORIES
+export default CATEGORIES;

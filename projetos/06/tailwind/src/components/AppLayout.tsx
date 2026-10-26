@@ -5,7 +5,7 @@ function AppLayout() {
   return (
     <div
       className={`
-      h-screen bg-gray-400 flex flex-col items-center text-gray-100
+      h-screen w-screen px-5 bg-gray-400 flex flex-col items-center text-gray-100
     `}
     >
       <main className="w-full">
