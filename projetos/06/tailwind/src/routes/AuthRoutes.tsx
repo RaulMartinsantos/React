@@ -4,16 +4,12 @@ import { Route } from "react-router";
 import { Routes } from "react-router";
 import AuthLayout from "../components/AuthLayout";
 
-
-
 function AuthRoutes() {
-  
-  
   return (
     <Routes>
       <Route path="/" element={<AuthLayout />}>
-        <Route index element={<SingIn />} />
-        <Route path="/singup" element={<SingUp />} />
+        <Route path="/" element={<SingUp />} />
+        <Route path="/singin" element={<SingIn />} />
       </Route>
     </Routes>
   );

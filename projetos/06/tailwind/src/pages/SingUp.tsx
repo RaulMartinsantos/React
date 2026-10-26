@@ -1,20 +1,52 @@
+import { z, ZodError } from "zod";
 import { useState } from "react";
+import api from "../services/api"
 import Input from "../components/Input";
 import Button from "../components/Button";
 
-function SingUp() {
-  function handleSubmit(e: React.SubmitEvent) {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      return alert("A senhas não coincidem");
-    }
-    console.log(name, email, password, confirmPassword);
-  }
 
+const singUpSchema = z
+  .object({
+    name: z.string().trim().min(1, "Informe o nome"),
+    email: z.email("informe um email válido"),
+    password: z.string().min(6, "Senha deve ter 6 carácteres"),
+    confirmPassword: z.string("confirme a senha"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "As senhas não coincidem",
+    path: ["confirmPassword"],
+  });
+
+function SingUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  async function handleSubmit(e: React.SubmitEvent) {
+    e.preventDefault();
+    try {
+      setIsLoading(true);
+
+      const data = singUpSchema.parse({
+        name,
+        email,
+        password,
+        confirmPassword,
+      });
+    } catch (err) {
+      if (err instanceof ZodError) {
+        return alert(err.issues[0].message);
+      }
+      alert("Não foi possível cadastrar");
+    } finally {
+      setIsLoading(false);
+    }
+
+    api.post("/users")
+  }
+
 
   return (
     <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">

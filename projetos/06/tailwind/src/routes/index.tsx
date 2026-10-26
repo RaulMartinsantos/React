@@ -4,12 +4,13 @@ import ManagerRoutes from "./MangerRoutes";
 import { BrowserRouter } from "react-router";
 import Skeleton from "../components/Skeleton";
 import EmployeeRoutes from "./EmployeeRoutes";
+import SingUp from "../pages/SingUp";
 
 const isLoading = false;
 
 const session = {
   user: {
-    role: "employee",
+    role: "",
   },
 };
 
