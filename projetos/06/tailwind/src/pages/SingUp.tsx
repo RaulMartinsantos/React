@@ -1,9 +1,10 @@
-import { z, ZodError } from "zod";
 import { useState } from "react";
-import api from "../services/api"
+import { z, ZodError } from "zod";
+import { AxiosError } from "axios";
+import api from "../services/api";
 import Input from "../components/Input";
 import Button from "../components/Button";
-
+import { Link, useNavigate } from "react-router";
 
 const singUpSchema = z
   .object({
@@ -24,6 +25,8 @@ function SingUp() {
   const [isLoading, setIsLoading] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const navigate = useNavigate();
+
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
     try {
@@ -35,18 +38,31 @@ function SingUp() {
         password,
         confirmPassword,
       });
+
+      await api.post("/users", data);
+
+      if (confirm("Cadastrado com sucesso deseja fazer login?")) {
+        navigate("/");
+      }
     } catch (err) {
+      console.log(err);
+
       if (err instanceof ZodError) {
         return alert(err.issues[0].message);
       }
+
+      if (err instanceof AxiosError) {
+        return (
+          err.response?.data?.message ??
+          alert("Não foi possível realizar o cadastrado")
+        );
+      }
+
       alert("Não foi possível cadastrar");
     } finally {
       setIsLoading(false);
     }
-
-    api.post("/users")
   }
-
 
   return (
     <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">
@@ -82,9 +98,11 @@ function SingUp() {
         onChange={(e) => setConfirmPassword(e.target.value)}
       />
 
-      <Button type="submit">Cadastrar</Button>
-      <a
-        href="/"
+      <Button type="submit" isLoading={isLoading}>
+        Cadastrar
+      </Button>
+      <Link
+        to="/"
         className={`
           text-sm font-semibold text-center
           text-gray-100 transition ease-linear 
@@ -92,7 +110,7 @@ function SingUp() {
         `}
       >
         Já tenho conta
-      </a>
+      </Link>
     </form>
   );
 }

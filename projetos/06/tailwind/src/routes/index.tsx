@@ -1,10 +1,9 @@
 import AuthRoutes from "./AuthRoutes";
-import NotFound from "../pages/NotFound";
+import useAuth from "../hooks/useAuth";
 import ManagerRoutes from "./MangerRoutes";
 import { BrowserRouter } from "react-router";
-import Skeleton from "../components/Skeleton";
 import EmployeeRoutes from "./EmployeeRoutes";
-import SingUp from "../pages/SingUp";
+import Skeleton from "../components/Skeleton";
 
 const isLoading = false;
 
@@ -15,6 +14,10 @@ const session = {
 };
 
 function Routes() {
+  const context = useAuth();
+
+  console.log(context);
+
   function Route() {
     switch (session?.user.role) {
       case "employee":

@@ -1,41 +1,69 @@
-import { useState } from "react";
+import { z, ZodError } from "zod";
+import api from "../services/api";
+import { AxiosError } from "axios";
+import { Link } from "react-router";
+import { useActionState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
 
-function SingIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+const singInSchema = z.object({
+  email: z.email("email inválido"),
+  password: z.string().trim().min(1, "Informe uma senha"),
+});
 
-  function handleSubmit(e: React.SubmitEvent) {
-    console.log(email, password);
-    e.preventDefault();
+function SingIn() {
+  const [state, formAction, isLoading] = useActionState(handleAction, null);
+
+  async function handleAction(_: any, formData: FormData) {
+    try {
+      const data = singInSchema.parse({
+        email: formData.get("email"),
+        password: formData.get("password"),
+      });
+
+      const response = await api.post("/sessions", data);
+      console.log(response.data);
+    } catch (err) {
+      if (err instanceof ZodError) {
+        return { message: err.issues[0].message };
+      }
+
+      if (err instanceof AxiosError) {
+        return { message: err.response?.data.message };
+      }
+
+      return { message: "Não foi possível entrar" };
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
+    <form action={formAction} className="w-full flex flex-col gap-4">
       <Input
         required
         legend="email"
+        name="email"
         type="email"
         placeholder="seu@email.com"
-        onChange={(e) => setEmail(e.target.value)}
       />
 
       <Input
         required
         legend="senha"
+        name="password"
         type="password"
         placeholder="123456"
-        onChange={(e) => setPassword(e.target.value)}
       />
+
+      <p className="text=sm text-red-600 text-center my-4 font-medium">
+        {state?.message}
+      </p>
 
       <Button type="submit" isLoading={isLoading}>
         Entrar
       </Button>
 
-      <a
-        href="/singup"
+      <Link
+        to="/singup"
         className={`
         text-sm font-semibold text-gray-100 
         mt-10 mb-4 text-center hover:text-green-800
@@ -43,7 +71,7 @@ function SingIn() {
       `}
       >
         Criar conta
-      </a>
+      </Link>
     </form>
   );
 }

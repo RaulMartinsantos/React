@@ -8,8 +8,8 @@ function AuthRoutes() {
   return (
     <Routes>
       <Route path="/" element={<AuthLayout />}>
-        <Route path="/" element={<SingUp />} />
-        <Route path="/singin" element={<SingIn />} />
+        <Route index element={<SingIn />} />
+        <Route path="/singup" element={<SingUp />} />
       </Route>
     </Routes>
   );
