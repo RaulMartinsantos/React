@@ -1,4 +1,4 @@
-import ConfirmSvg from "../assets/approved.svg";
+import { Check } from "lucide-react";
 import { Navigate, useLocation, Link } from "react-router";
 
 function Confirm() {
@@ -20,7 +20,7 @@ function Confirm() {
         Solicitação enviada!
       </h1>
 
-      <img src={ConfirmSvg} alt="ícone de confirmação" className="w-28" />
+      <Check className="w-28 h-28 text-green-100" />
       <p className="text-sm text-gray-200 text-center">
         Agora basta aguardar, sua solicitação será analisada e em breve o setor
         financeiro entrará em contato

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { z, ZodError } from "zod";
 import { File } from "lucide-react";
 import Input from "../components/Input";
 import Select from "../components/Select";
@@ -6,6 +7,14 @@ import Button from "../components/Button";
 import Upload from "../components/upload";
 import { useNavigate, useParams } from "react-router";
 import CATEGORIES, { CATEGORIES_KEYS } from "../utils/categories";
+
+const refundSchema = z.object({
+  name: z.string().min(3, "Informe um nome claro para sua solicitação"),
+  category: z.string().min(1, "Informe uma categoria"),
+  amount: z.coerce
+    .number("Informe um valor válido")
+    .positive("O valor precisa ser positivo e superior a 0"),
+});
 
 function Refund() {
   const [name, setName] = useState("");
@@ -19,11 +28,30 @@ function Refund() {
 
   function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
+
     if (params.id) {
       return navigate(-1);
     }
-    console.log(name, amount, category, isLoading, filename);
-    navigate("/confirm", { state: { FromSubmit: true } });
+
+    try {
+      setIsLoading(true);
+
+      const data = refundSchema.parse({
+        name,
+        category,
+        amount: amount.replace(",", "."),
+      });
+
+      navigate("/confirm", { state: { FromSubmit: true } });
+    } catch (err) {
+      console.log(err);
+
+      if (err instanceof ZodError) {
+        return alert(err.issues[0].message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
