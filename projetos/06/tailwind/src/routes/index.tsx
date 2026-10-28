@@ -5,18 +5,8 @@ import { BrowserRouter } from "react-router";
 import EmployeeRoutes from "./EmployeeRoutes";
 import Skeleton from "../components/Skeleton";
 
-const isLoading = false;
-
-const session = {
-  user: {
-    role: "",
-  },
-};
-
 function Routes() {
-  const context = useAuth();
-
-  console.log(context);
+  const { session, isLoading } = useAuth();
 
   function Route() {
     switch (session?.user.role) {

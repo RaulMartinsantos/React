@@ -23,7 +23,6 @@ function Dashboard() {
 
   function fetchRefunds(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(name);
   }
 
   function HandlePagination(action: "next" | "previous") {

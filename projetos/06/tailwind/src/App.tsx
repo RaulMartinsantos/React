@@ -1,11 +1,11 @@
 import Routes from "./routes";
-import AuthContext from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
-    <AuthContext.Provider value={{ name: "Raul", email: "raul@email.com" }}>
+    <AuthProvider>
       <Routes />
-    </AuthContext.Provider>
+    </AuthProvider>
   );
 }
 

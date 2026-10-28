@@ -2,6 +2,7 @@ import { z, ZodError } from "zod";
 import api from "../services/api";
 import { AxiosError } from "axios";
 import { Link } from "react-router";
+import useAuth from "../hooks/useAuth";
 import { useActionState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
@@ -12,6 +13,8 @@ const singInSchema = z.object({
 });
 
 function SingIn() {
+  const auth = useAuth();
+
   const [state, formAction, isLoading] = useActionState(handleAction, null);
 
   async function handleAction(_: any, formData: FormData) {
@@ -22,8 +25,9 @@ function SingIn() {
       });
 
       const response = await api.post("/sessions", data);
-      console.log(response.data);
+      auth.save(response.data);
     } catch (err) {
+      console.log(err);
       if (err instanceof ZodError) {
         return { message: err.issues[0].message };
       }
