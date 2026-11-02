@@ -1,22 +1,15 @@
-function maxProfit(prices: number[]): number {
-  let minPrice = prices[0];
-  let maxProfit = 0;
-  let profit = 0;
+function groupAnagrams(strs: string[]): string[][] {
+  const map = new Map<string, string[]>();
 
-  for (let i = 0; i < prices.length; i++) {
-    if (minPrice > prices[i]) {
-      minPrice = prices[i];
-    }
-    profit = prices[i] - minPrice;
+  for (let i = 0; i < strs.length; i++) {
+    const key = strs[i].split("").sort().join("");
 
-    if (profit > maxProfit) {
-      maxProfit = profit;
+    if (map.has(key)) {
+      map.get(key)!.push(strs[i]);
+    } else {
+      map.set(key, [strs[i]]);
     }
   }
 
-  if (maxProfit > 0) {
-    return maxProfit;
-  }
-
-  return 0;
+  return Array.from(map.values());
 }
