@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { z, ZodError } from "zod";
+import api from "../services/api";
+import { AxiosError } from "axios";
 import { File } from "lucide-react";
 import Input from "../components/Input";
 import Select from "../components/Select";
@@ -21,12 +23,12 @@ function Refund() {
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [filename, setFileName] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(null);
 
   const navigate = useNavigate();
   const params = useParams<{ id: string }>();
 
-  function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (params.id) {
@@ -36,10 +38,24 @@ function Refund() {
     try {
       setIsLoading(true);
 
+      if (!file) {
+        return alert("Selecione um arquivo de comprovante");
+      }
+
+      const fileUploadForm = new FormData();
+      fileUploadForm.append("file", file);
+
+      const response = await api.post("/uploads", fileUploadForm);
+
       const data = refundSchema.parse({
         name,
         category,
         amount: amount.replace(",", "."),
+      });
+
+      await api.post("/refunds", {
+        ...data,
+        filename: response.data.filename,
       });
 
       navigate("/confirm", { state: { FromSubmit: true } });
@@ -48,6 +64,10 @@ function Refund() {
 
       if (err instanceof ZodError) {
         return alert(err.issues[0].message);
+      }
+
+      if (err instanceof AxiosError) {
+        return alert(err.response?.data.message);
       }
     } finally {
       setIsLoading(false);
@@ -116,8 +136,8 @@ function Refund() {
         ) : (
           <Upload
             legend="comprovante"
-            filename={filename && filename.name}
-            onChange={(e) => e.target.files && setFileName(e.target.files[0])}
+            filename={file && file.name}
+            onChange={(e) => e.target.files && setFile(e.target.files[0])}
           />
         )}
 

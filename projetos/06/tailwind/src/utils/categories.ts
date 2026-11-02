@@ -5,7 +5,7 @@ const CATEGORIES = {
     name: "Alimentação",
     icon: Utensils,
   },
-  other: {
+  others: {
     name: "Outros",
     icon: Pin,
   },
