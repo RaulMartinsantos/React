@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z, ZodError } from "zod";
 import api from "../services/api";
 import { AxiosError } from "axios";
@@ -9,6 +9,7 @@ import Button from "../components/Button";
 import Upload from "../components/upload";
 import { useNavigate, useParams } from "react-router";
 import CATEGORIES, { CATEGORIES_KEYS } from "../utils/categories";
+import { formatCurrency } from "../utils/formatCurrency";
 
 const refundSchema = z.object({
   name: z.string().min(3, "Informe um nome claro para sua solicitação"),
@@ -24,6 +25,7 @@ function Refund() {
   const [category, setCategory] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const [fileURL, setFileURL] = useState<string | null>(null);
 
   const navigate = useNavigate();
   const params = useParams<{ id: string }>();
@@ -74,6 +76,31 @@ function Refund() {
     }
   }
 
+  async function fetchRefund(id: string) {
+    try {
+      const { data } = await api.get<RefundAPIResponse>(`/refunds/${id}`);
+
+      setName(data.name);
+      setAmount(formatCurrency(data.amount));
+      setCategory(data.category);
+      setFileURL(data.filename);
+    } catch (err) {
+      console.log(err);
+
+      if (err instanceof AxiosError) {
+        return alert(err.response?.data.message);
+      }
+
+      alert("Não foi possível carregar as solicitações");
+    }
+  }
+
+  useEffect(() => {
+    if (params.id) {
+      fetchRefund(params.id);
+    }
+  }, [params.id]);
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -115,12 +142,12 @@ function Refund() {
           <Input
             legend="valor"
             onChange={(e) => setAmount(e.target.value)}
-            value={amount}
+            value={`R$${amount}`}
             disabled={!!params.id}
           />
         </div>
 
-        {params.id ? (
+        {params.id && fileURL ? (
           <div
             className={`
               text-sm text-green-100 font-semibold 
@@ -129,7 +156,10 @@ function Refund() {
             `}
           >
             <File />
-            <a href="#" target="_blank">
+            <a
+              href={`http://localhost:3333/uploads/${fileURL}`}
+              target="_blank"
+            >
               Abrir comprovante
             </a>
           </div>

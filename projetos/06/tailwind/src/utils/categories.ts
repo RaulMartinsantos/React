@@ -1,6 +1,19 @@
-import { Utensils, Pin, BriefcaseBusiness, Car, House } from "lucide-react";
+import {
+  Utensils,
+  Pin,
+  BriefcaseBusiness,
+  Car,
+  House,
+  type LucideIcon,
+} from "lucide-react";
 
-const CATEGORIES = {
+const CATEGORIES: Record<
+  CategoriesAPIEnum,
+  {
+    name: string;
+    icon: LucideIcon;
+  }
+> = {
   food: {
     name: "Alimentação",
     icon: Utensils,

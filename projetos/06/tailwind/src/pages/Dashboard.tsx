@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import api from "../services/api";
+import { AxiosError } from "axios";
 import { Search } from "lucide-react";
 import Input from "../components/Input";
 import Button from "../components/Button";
@@ -7,22 +9,47 @@ import Pagination from "../components/Pagination";
 import { formatCurrency } from "../utils/formatCurrency";
 import RefundItem, { type RefundItemProps } from "../components/RefundItem";
 
-const refund_example: RefundItemProps = {
-  id: "123",
-  name: "Raul",
-  category: "Alimentação",
-  amount: formatCurrency(12.99),
-  categoryImg: CATEGORIES["food"].icon,
-};
+const PER_PAGE = 2;
 
 function Dashboard() {
   const [page, setPage] = useState(1);
   const [name, setName] = useState("");
-  const [totalPages, setTotalPages] = useState(10);
-  const [refunds, setRefunds] = useState<RefundItemProps[]>([refund_example]);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [refunds, setRefunds] = useState<RefundItemProps[]>([]);
 
-  function fetchRefunds(e: React.SubmitEvent<HTMLFormElement>) {
+  async function fetchRefunds() {
+    try {
+      const response = await api.get<RefundsPaginationAPIResponse>(
+        `/refunds?name=${name.trim()}&page=${page}&perPage=${PER_PAGE}`,
+      );
+      setRefunds(
+        response.data.refunds.map((refund) => ({
+          id: refund.id,
+          name: refund.user.name,
+          description: refund.name,
+          amount: formatCurrency(refund.amount),
+          categoryImg: CATEGORIES[refund.category].icon,
+        })),
+      );
+
+      console.log(response);
+
+      setTotalPages(
+        (response.data.pagination.totalPages = 0
+          ? 1
+          : response.data.pagination.totalPages),
+      );
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        alert(err.response?.data.message);
+      }
+      console.log(err);
+    }
+  }
+
+  function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
+    fetchRefunds();
   }
 
   function HandlePagination(action: "next" | "previous") {
@@ -39,11 +66,15 @@ function Dashboard() {
     });
   }
 
+  useEffect(() => {
+    fetchRefunds();
+  }, [page]);
+
   return (
     <div className="bg-gray-500 rounded-xl p-10 md:min-w-[768px] lg:max-w-[1000px] m-auto">
       <h1 className="text-gray-100 font-bold text-xl flex-1">Solicitações</h1>
       <form
-        onSubmit={fetchRefunds}
+        onSubmit={handleSubmit}
         className={`
         flex flex-1 items-center justify-between 
         border-b-[1px] border-b-gray-400

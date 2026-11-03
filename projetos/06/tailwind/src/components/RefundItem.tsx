@@ -4,7 +4,7 @@ import type { LucideIcon } from "lucide-react";
 export type RefundItemProps = {
   id: string;
   name: string;
-  category: string;
+  description: string;
   amount: string;
   categoryImg: LucideIcon;
 };
@@ -34,7 +34,7 @@ function RefundItem({ data, to, className, ...props }: LinkProps) {
 
       <div className="flex flex-col flex-1">
         <strong className="text-sm text-gray-100">{data.name}</strong>
-        <span className="text-xs text-gray-200">{data.category}</span>
+        <span className="text-xs text-gray-200">{data.description}</span>
       </div>
       <span className="text-sm text-gray-100 font-semibold">
         <small className="font-normal text-gray-200">R$</small>
