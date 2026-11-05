@@ -1,11 +1,12 @@
+import * as THREE from "three";
 import { useState, useRef } from "react";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, Environment } from "@react-three/drei";
 
 function Cube() {
   const cubeRef = useRef();
   const [color, setColor] = useState("#8b5cf6");
-  const [hovered, setHoverd] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
   const colors = [
     "#8b5cf6",
@@ -16,16 +17,67 @@ function Cube() {
     "#ec4899",
   ];
 
+  useFrame((state, delta) => {
+    if (!cubeRef.current) return;
+
+    cubeRef.current.rotation.y += delta * 0.8;
+    cubeRef.current.rotation.x += delta * 0.3;
+
+    const targetScale = hovered ? 1.2 : 1;
+
+    cubeRef.current.scale.x +=
+      (targetScale - cubeRef.current.scale.x) * 10 * delta;
+
+    cubeRef.current.scale.y +=
+      (targetScale - cubeRef.current.scale.x) * 10 * delta;
+
+    cubeRef.current.scale.z +=
+      (targetScale - cubeRef.current.scale.x) * 10 * delta;
+  });
+
   function handleClick() {
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
-
     setColor(randomColor);
   }
 
+  function handlePointerOver() {
+    setHovered(true);
+    document.body.style.cursor = "grab";
+  }
+
+  function handlePointerOut() {
+    setHovered(false);
+    document.body.style.cursor = "auto";
+  }
+
+  function handlePointerDown() {
+    document.body.style.cursor = "grabbing";
+  }
+
+  function handlePointerUp() {
+    document.body.style.cursor = "grab";
+  }
+
   return (
-    <mesh ref={cubeRef} onClick={handleClick}>
+    <mesh
+      ref={cubeRef}
+      castShadow
+      onClick={handleClick}
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+    >
       <boxGeometry args={[2, 2, 2]} />
-      <meshStandardMaterial color={color} roughness={0.3} metalness={0.2} />
+      <meshPhysicalMaterial
+        color={color}
+        roughness={0.05}
+        metalness={0}
+        transmission={0.5}
+        thickness={100}
+        ior={1.5}
+        transparent
+      />
     </mesh>
   );
 }
@@ -43,11 +95,15 @@ function App() {
             <Canvas
               className="w-[400px] h-[400px]"
               camera={{ position: [4, 3, 5], fov: 50 }}
+              shadows
             >
-              <ambientLight intensity={1} />
-              <directionalLight position={[5, 5, 5]} intensity={2} />
+              <ambientLight intensity={0.8} />
+              <directionalLight position={[5, 5, 5]} intensity={2} castShadow />
               <Cube />
+              <planeGeometry args={[20, 20]} />
+              <shaderMaterial opacity={0.3} />
               <OrbitControls />
+              <Environment preset="studio" />
             </Canvas>
 
             <p className="text-center flex items-center w-[400px] h-[300px] mr-20">
