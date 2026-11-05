@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Syne", sans-serif;
+  --color-blue-100: #040d1a;
+}
+
+
+
+body {
+  @apply bg-blue-100 text-white;
+}
