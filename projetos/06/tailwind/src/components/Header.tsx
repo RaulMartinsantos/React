@@ -7,7 +7,8 @@ interface HeaderProps extends React.ComponentProps<"header"> {}
 function Header({ ...props }: HeaderProps) {
   const { session, remove } = useAuth();
   const userName =
-    session?.user.name.charAt(0).toUpperCase() + session?.user.name.slice(1)!;
+    session?.user.name.charAt(0).toUpperCase() +
+    session?.user.name.slice(1).toLocaleLowerCase()!;
 
   return (
     <header {...props} className="flex items-center justify-between px-5">

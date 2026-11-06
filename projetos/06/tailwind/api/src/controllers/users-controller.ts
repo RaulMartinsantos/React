@@ -30,7 +30,7 @@ class UsersController {
       throw new AppError("Já existe um usuário cadastrado com esse e-mail")
     }
 
-    const hashedPassword = await hash(password, 8)
+    const hashedPassword = await hash(password, 12)
 
     await prisma.user.create({
       data: {

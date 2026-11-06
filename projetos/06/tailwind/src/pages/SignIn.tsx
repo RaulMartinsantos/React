@@ -65,7 +65,7 @@ function SingIn() {
       />
 
       {errMessage !== "" && (
-        <p className="text-red-900 p-2 flex gap-2">
+        <p className="text-red-900 p-2 flex gap-2 mt-4">
           <Info />
           {errMessage}
         </p>
