@@ -12,6 +12,8 @@ const singInSchema = z.object({
   password: z.string().trim().min(1, "Informe uma senha"),
 });
 
+type Form = z.infer<typeof singInSchema>;
+
 function SingIn() {
   const auth = useAuth();
 
