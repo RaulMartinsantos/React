@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { useState, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Environment } from "@react-three/drei";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 
 function Cube() {
   const cubeRef = useRef();
@@ -29,10 +30,10 @@ function Cube() {
       (targetScale - cubeRef.current.scale.x) * 10 * delta;
 
     cubeRef.current.scale.y +=
-      (targetScale - cubeRef.current.scale.x) * 10 * delta;
+      (targetScale - cubeRef.current.scale.y) * 10 * delta;
 
     cubeRef.current.scale.z +=
-      (targetScale - cubeRef.current.scale.x) * 10 * delta;
+      (targetScale - cubeRef.current.scale.z) * 10 * delta;
   });
 
   function handleClick() {
@@ -78,6 +79,11 @@ function Cube() {
         ior={1.5}
         transparent
       />
+
+      <lineSegments>
+        <edgesGeometry args={[new THREE.BoxGeometry(2.02, 2.02, 2.02)]} />
+        <lineBasicMaterial color="#a855f7" linewidth={2} toneMapped={false} />
+      </lineSegments>
     </mesh>
   );
 }
@@ -97,16 +103,25 @@ function App() {
               camera={{ position: [4, 3, 5], fov: 50 }}
               shadows
             >
+              <EffectComposer>
+                <Bloom
+                  intensity={2}
+                  luminanceThreshold={0.1}
+                  luminanceSmoothing={0.9}
+                  mipmapBlur
+                />
+              </EffectComposer>
               <ambientLight intensity={0.8} />
               <directionalLight position={[5, 5, 5]} intensity={2} castShadow />
               <Cube />
+
               <planeGeometry args={[20, 20]} />
               <shaderMaterial opacity={0.3} />
               <OrbitControls />
               <Environment preset="studio" />
             </Canvas>
 
-            <p className="text-center flex items-center w-[400px] h-[300px] mr-20">
+            <p className="text-center flex items-center w-[400px] h-[300px] mx-20">
               Clique no cubo para mudar de cor
             </p>
           </div>
