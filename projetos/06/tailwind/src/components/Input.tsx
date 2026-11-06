@@ -23,7 +23,7 @@ function Input({ legend, errorMessage, ...props }: inputProps) {
       />
       {errorMessage && (
         <p className="text-red-900 p-2 flex gap-2">
-          {errorMessage && <Info />}
+          <Info />
           {errorMessage}
         </p>
       )}

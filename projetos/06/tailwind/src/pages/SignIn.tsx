@@ -1,11 +1,14 @@
-import { z, ZodError } from "zod";
+import { z } from "zod";
+import { useState } from "react";
 import api from "../services/api";
 import { AxiosError } from "axios";
 import { Link } from "react-router";
 import useAuth from "../hooks/useAuth";
-import { useActionState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Info } from "lucide-react";
 
 const singInSchema = z.object({
   email: z.email("email inválido"),
@@ -15,27 +18,25 @@ const singInSchema = z.object({
 type Form = z.infer<typeof singInSchema>;
 
 function SingIn() {
+  const [errMessage, setErrMessage] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<Form>({
+    resolver: zodResolver(singInSchema),
+  });
+
   const auth = useAuth();
 
-  const [state, formAction, isLoading] = useActionState(handleAction, null);
-
-  async function handleAction(_: any, formData: FormData) {
+  async function handleAction(data: Form) {
     try {
-      const data = singInSchema.parse({
-        email: formData.get("email"),
-        password: formData.get("password"),
-      });
-
       const response = await api.post("/sessions", data);
       auth.save(response.data);
     } catch (err) {
-      console.log(err);
-      if (err instanceof ZodError) {
-        return { message: err.issues[0].message };
-      }
-
       if (err instanceof AxiosError) {
-        return { message: err.response?.data.message };
+        setErrMessage(err.response?.data.message);
       }
 
       return { message: "Não foi possível entrar" };
@@ -43,28 +44,34 @@ function SingIn() {
   }
 
   return (
-    <form action={formAction} className="w-full flex flex-col gap-4">
+    <form
+      onSubmit={handleSubmit(handleAction)}
+      className="w-full flex flex-col gap-4"
+    >
       <Input
-        required
+        {...register("email")}
         legend="email"
-        name="email"
         type="email"
         placeholder="seu@email.com"
+        errorMessage={errors.email && errors.email.message}
       />
 
       <Input
-        required
+        {...register("password")}
         legend="senha"
-        name="password"
         type="password"
         placeholder="123456"
+        errorMessage={errors.password && errors.password.message}
       />
 
-      <p className="text=sm text-red-600 text-center my-4 font-medium">
-        {state?.message}
-      </p>
+      {errMessage !== "" && (
+        <p className="text-red-900 p-2 flex gap-2">
+          <Info />
+          {errMessage}
+        </p>
+      )}
 
-      <Button type="submit" isLoading={isLoading}>
+      <Button type="submit" isLoading={isSubmitting}>
         Entrar
       </Button>
 
