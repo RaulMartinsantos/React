@@ -4,6 +4,8 @@ import Header from "./components/header";
 import Dashboard from "./components/dashboard";
 import TransactionTable from "./components/transactionTable";
 
+Modal.setAppElement("#root");
+
 function App() {
   const [isNewTransactionModalOpen, setIsNewTransactionModalOpen] =
     useState(false);
