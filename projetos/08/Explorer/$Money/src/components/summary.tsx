@@ -5,7 +5,8 @@ function Summary() {
     <>
       <div
         className={`
-        bg-shape py-6 px-8 rounded-md shadow-2xs flex justify-center items-center flex-col
+        bg-shape py-6 px-8 rounded-md shadow-2xs 
+        flex justify-center items-center flex-col
       `}
       >
         <header className="flex items-center justify-between w-full">
@@ -19,7 +20,8 @@ function Summary() {
 
       <div
         className={`
-        bg-shape py-5 px-8 rounded-md flex justify-center items-center flex-col
+        bg-shape py-5 px-8 rounded-md flex shadow-2xs 
+        justify-center items-center flex-col
       `}
       >
         <header className="flex items-center justify-between w-full">
@@ -33,7 +35,8 @@ function Summary() {
 
       <div
         className={`
-        py-5 px-8 rounded-md bg-green text-white flex justify-center flex-col items-center
+         bg-green py-5 px-8 rounded-md text-white 
+         shadow-2xs flex justify-center flex-col items-center
       `}
       >
         <header className="flex items-center justify-between w-full">
