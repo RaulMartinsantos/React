@@ -1,14 +1,19 @@
-import { CircleDollarSign } from "lucide-react";
 import Container from "./container";
+import { CircleDollarSign } from "lucide-react";
 
-function Header() {
+interface HeaderProps extends React.ComponentProps<"button"> {
+  onClick: () => void;
+}
+
+function Header({ onClick, ...props }: HeaderProps) {
   return (
     <header className="bg-blue max-w-full">
       <Container className="flex max-w-[1120px] justify-between m-auto items-center pt-8 pb-46">
         <CircleDollarSign className="bg-green-500 rounded-full text-white h-20 w-20" />
         <button
+          {...props}
           type="button"
-          onClick={() => alert("pinto!")} 
+          onClick={onClick}
           className={`
             bg-blue-light rounded-sm text-[1rem] 
             border-0 p-8 h-8 text-background text-center flex items-center

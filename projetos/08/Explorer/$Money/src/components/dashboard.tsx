@@ -7,7 +7,7 @@ function Dashboard() {
       <main
         className={`
         max-w-[1120px] m-auto grid grid-cols-3
-        gap-8 -mt-28 pt-7 max-md:gap-2
+        gap-8 -mt-26 pt-7 max-md:gap-2
       `}
       >
         <Summary />

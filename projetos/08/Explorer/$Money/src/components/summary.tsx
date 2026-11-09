@@ -5,7 +5,7 @@ function Summary() {
     <>
       <div
         className={`
-        bg-shape py-8 px-8 rounded-md shadow-2xs flex justify-center items-center flex-col
+        bg-shape py-6 px-8 rounded-md shadow-2xs flex justify-center items-center flex-col
       `}
       >
         <header className="flex items-center justify-between w-full">
