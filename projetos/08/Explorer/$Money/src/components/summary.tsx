@@ -13,7 +13,7 @@ function Summary() {
           <p>Entradas</p>
           <CircleArrowUp className="text-green-400" />
         </header>
-        <strong className="block mt-4 text-[2rem] max-md:text-[1.5rem] leading-12">
+        <strong className="block mt-4 text-[2rem] max-sm:text-[1.5rem] leading-12">
           R$1000,00
         </strong>
       </div>
@@ -28,7 +28,7 @@ function Summary() {
           <p>Saídas</p>
           <CircleArrowDown className="text-red-400" />
         </header>
-        <strong className="block mt-4 text-[2rem] max-md:text-[1.4rem] leading-12 whitespace-nowrap">
+        <strong className="block mt-4 text-[2rem] max-sm:text-[1.4rem] leading-12 whitespace-nowrap">
           - R$600,00
         </strong>
       </div>
@@ -43,7 +43,7 @@ function Summary() {
           <p>Total</p>
           <DollarSign />
         </header>
-        <strong className="block mt-4 text-[2rem] max-md:text-[1.5rem] leading-12 whitespace-nowrap">
+        <strong className="block mt-4 text-[2rem] max-sm:text-[1.5rem] leading-12 whitespace-nowrap">
           R$400,00
         </strong>
       </div>
