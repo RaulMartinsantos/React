@@ -1,8 +1,6 @@
 import Modal from "react-modal";
 import { CircleArrowDown, CircleArrowUp, X } from "lucide-react";
 
-const borderColor = "#d7d7d7";
-
 interface NewTransactionModalProps {
   isOpen: boolean;
   isClosed: () => void;
