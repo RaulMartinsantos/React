@@ -23,6 +23,7 @@ function NewTransactionModal({
         type="button"
         onClick={isClosed}
         className="react-modal-close-button text-text-body"
+        aria-label="Fechar modal"
       >
         <X className="" />
       </button>
