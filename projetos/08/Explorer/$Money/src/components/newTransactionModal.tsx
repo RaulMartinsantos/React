@@ -1,7 +1,8 @@
 import Modal from "react-modal";
-import { CircleArrowDown, CircleArrowUp, X } from "lucide-react";
-import { useState, type SubmitEvent } from "react";
+import api from "../services/api";
 import RadioBox from "./radioBox";
+import { useState, type SubmitEvent } from "react";
+import { CircleArrowDown, CircleArrowUp, X } from "lucide-react";
 
 interface NewTransactionModalProps {
   isOpen: boolean;
@@ -18,15 +19,17 @@ function NewTransactionModal({
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
 
-  function handleCreateNewTransaction(e: SubmitEvent) {
+  async function handleCreateNewTransaction(e: SubmitEvent) {
     e.preventDefault();
 
-    console.log({
+    const data = {
       title,
       value,
       type,
       category,
-    });
+    };
+
+    await api.post("/transactions", data);
   }
 
   return (
