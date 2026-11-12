@@ -1,5 +1,7 @@
 import Modal from "react-modal";
 import { CircleArrowDown, CircleArrowUp, X } from "lucide-react";
+import { useState, type SubmitEvent } from "react";
+import RadioBox from "./radioBox";
 
 interface NewTransactionModalProps {
   isOpen: boolean;
@@ -11,6 +13,22 @@ function NewTransactionModal({
   isClosed,
   ...props
 }: NewTransactionModalProps) {
+  const [type, setType] = useState<"deposit" | "withdraw">("deposit");
+  const [value, setValue] = useState(0);
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+
+  function handleCreateNewTransaction(e: SubmitEvent) {
+    e.preventDefault();
+
+    console.log({
+      title,
+      value,
+      type,
+      category,
+    });
+  }
+
   return (
     <Modal
       isOpen={isOpen}
@@ -27,43 +45,47 @@ function NewTransactionModal({
       >
         <X className="" />
       </button>
-      <form>
+      <form onSubmit={handleCreateNewTransaction}>
         <h2 className="text-text-title text-2xl mb-8">Cadastrar transação</h2>
         <input
+          value={title}
           className="placeholder:text-text-body w-full px-6 h-16 rounded-sm bg-input-bg border border-border-color font-normal text-[1rem]"
           placeholder="Título"
+          onChange={(e) => setTitle(e.target.value)}
         />
         <input
+          value={value}
           className="placeholder:text-text-body w-full px-6 h-16 rounded-sm bg-input-bg border border-border-color font-normal text-[1rem] mt-4"
           type="number"
           placeholder="Valor"
+          onChange={(e) => setValue(Number(e.target.value))}
         />
 
         <div className="mt-4 grid grid-cols-2 gap-2 max-sm:grid-cols-1">
-          <button
-            type="button"
-            className={`
-              "h-16 border border-border-color rounded-sm flex items-center justify-center hover:border-border-hover transition-[filter] ease-linear
-            `}
-          >
-            <CircleArrowUp className="text-green-400 h-5 w-5" />
-            <span className="inline ml-4 text-[1rem]">Entrada</span>
-          </button>
+          <RadioBox
+            variant="deposit"
+            label="Entrada"
+            icon={CircleArrowUp}
+            iconClassName="text-green"
+            onClick={() => setType("deposit")}
+            isSelected={type === "deposit"}
+          />
 
-          <button
-            type="button"
-            className={`
-              h-16 border border-border-color rounded-sm flex items-center justify-center hover:border-border-hover transition-[filter] ease-linear
-            `}
-          >
-            <CircleArrowDown className="text-red-400 h-5 w-5" />
-            <span className="inline ml-4 text-[1rem]">Saída</span>
-          </button>
+          <RadioBox
+            variant="withdraw"
+            label="Saida"
+            icon={CircleArrowDown}
+            iconClassName="text-red"
+            onClick={() => setType("withdraw")}
+            isSelected={type === "withdraw"}
+          />
         </div>
 
         <input
+          value={category}
           className="placeholder:text-text-body w-full mt-4 px-6 py-0 h-16 rounded-sm bg-input-bg border border-border-color font-normal text-[1rem]"
           placeholder="Categoria"
+          onChange={(e) => setCategory(e.target.value)}
         />
         <button
           className="w-full p-6 bg-green text-white rounded-sm text-[1rem] mt-6 hover:brightness-75 transition-[filter] ease-linear font-semibold"
