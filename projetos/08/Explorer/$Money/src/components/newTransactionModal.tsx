@@ -1,5 +1,4 @@
 import Modal from "react-modal";
-import api from "../services/api";
 import RadioBox from "./radioBox";
 import TransactionContext from "../../transactionContext";
 import { useState, useContext, type SubmitEvent } from "react";
@@ -18,23 +17,31 @@ function NewTransactionModal({
   const [type, setType] = useState<"deposit" | "withdraw" | undefined>(
     undefined,
   );
-  const [value, setValue] = useState(0);
+  const [amount, setAmount] = useState(0);
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
 
-  const transactions = useContext(TransactionContext)
+  const { createTransaction } = useContext(TransactionContext);
 
   async function handleCreateNewTransaction(e: SubmitEvent) {
     e.preventDefault();
 
-    const data = {
+    if (type === undefined) {
+      return alert("Selecione o tipo de transação");
+    }
+
+    await createTransaction({
       title,
-      value,
+      amount,
       type,
       category,
-    };
+    });
 
-    await api.post("/transactions", data);
+    setType(undefined);
+    setTitle("");
+    setAmount(0);
+    setCategory("");
+    isClosed();
   }
 
   return (
@@ -62,11 +69,11 @@ function NewTransactionModal({
           onChange={(e) => setTitle(e.target.value)}
         />
         <input
-          value={value}
+          value={amount}
           className="placeholder:text-text-body w-full px-6 h-16 rounded-sm bg-input-bg border border-border-color font-normal text-[1rem] mt-4"
           type="number"
           placeholder="Valor"
-          onChange={(e) => setValue(Number(e.target.value))}
+          onChange={(e) => setAmount(Number(e.target.value))}
         />
 
         <div className="mt-4 grid grid-cols-2 gap-2 max-sm:grid-cols-1">

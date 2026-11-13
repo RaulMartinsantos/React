@@ -2,7 +2,7 @@ interface Transaction {
   id: number;
   title: string;
   amount: number;
-  type: string;
+  type: string | undefined;
   category: string;
   createdAt: string;
 }

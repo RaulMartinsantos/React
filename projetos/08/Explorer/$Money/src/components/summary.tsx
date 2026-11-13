@@ -3,8 +3,8 @@ import TransactionContext from "../../transactionContext";
 import { useContext } from "react";
 
 function Summary() {
-  const transactions = useContext(TransactionContext);
-  console.log(transactions)
+  const { transactions } = useContext(TransactionContext);
+  console.log(transactions);
 
   return (
     <>
