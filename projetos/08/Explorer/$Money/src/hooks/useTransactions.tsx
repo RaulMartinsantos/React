@@ -1,6 +1,12 @@
-import api from "./src/services/api";
-import { createContext, useEffect, useState, type ReactNode } from "react";
-import type Transaction from "./src/utils/transactionType";
+import api from "../services/api";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
+import type Transaction from "../utils/transactionType";
 
 interface TransactionsContextProps {
   children: ReactNode;
@@ -29,8 +35,14 @@ export function TransactionsProvider({ children }: TransactionsContextProps) {
     });
   }, []);
 
-  async function createTransaction(transaction: TransactionInput) {
-    await api.post("/transactions", transaction);
+  async function createTransaction(transactionInput: TransactionInput) {
+    const response = await api.post("/transactions", {
+      ...transactionInput,
+      createdAt: new Date(),
+    });
+    const { transaction } = response.data;
+
+    setTransactions([...transactions, transaction]);
   }
 
   return (
@@ -40,4 +52,10 @@ export function TransactionsProvider({ children }: TransactionsContextProps) {
   );
 }
 
-export default TransactionContext;
+function useTransaction() {
+  const context = useContext(TransactionContext);
+
+  return context;
+}
+
+export default useTransaction;

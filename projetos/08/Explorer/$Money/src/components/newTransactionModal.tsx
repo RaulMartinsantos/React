@@ -1,7 +1,7 @@
 import Modal from "react-modal";
 import RadioBox from "./radioBox";
-import TransactionContext from "../../transactionContext";
-import { useState, useContext, type SubmitEvent } from "react";
+import { useState, type SubmitEvent } from "react";
+import useTransaction from "../hooks/useTransactions";
 import { CircleArrowDown, CircleArrowUp, X } from "lucide-react";
 
 interface NewTransactionModalProps {
@@ -21,7 +21,7 @@ function NewTransactionModal({
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
 
-  const { createTransaction } = useContext(TransactionContext);
+  const { createTransaction } = useTransaction();
 
   async function handleCreateNewTransaction(e: SubmitEvent) {
     e.preventDefault();

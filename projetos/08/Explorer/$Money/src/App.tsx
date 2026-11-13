@@ -3,7 +3,7 @@ import { Children, useState } from "react";
 import Header from "./components/header";
 import TransactionContext, {
   TransactionsProvider,
-} from "../transactionContext";
+} from "./hooks/useTransactions";
 import Dashboard from "./components/dashboard";
 import TransactionTable from "./components/transactionTable";
 import NewTransactionModal from "./components/newTransactionModal";

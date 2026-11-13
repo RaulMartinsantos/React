@@ -1,9 +1,9 @@
-import { useContext } from "react";
 import Container from "./container";
-import TransactionContext from "../../transactionContext";
+import useTransaction from "../hooks/useTransactions";
+import TransactionContext from "../hooks/useTransactions";
 
 function TransactionTable() {
-  const { transactions } = useContext(TransactionContext);
+  const { transactions } = useTransaction();
 
   return (
     <Container className="mt-16">
@@ -21,7 +21,8 @@ function TransactionTable() {
           {transactions.map((transaction) => (
             <tr key={transaction.id}>
               <td className="bg-shape text-[1.3rem] text-text-title p-5 pl-7">
-                {transaction.title}
+                {transaction.title.charAt(0).toUpperCase() +
+                  transaction.title.slice(1)}
               </td>
 
               <td
@@ -37,7 +38,8 @@ function TransactionTable() {
               </td>
 
               <td className="bg-shape text-[1.3rem] text-text-body p-5">
-                {transaction.category}
+                {transaction.category.charAt(0).toUpperCase() +
+                  transaction.category.slice(1)}
               </td>
 
               <td className="bg-shape text-[1.3rem] text-text-body p-5">
