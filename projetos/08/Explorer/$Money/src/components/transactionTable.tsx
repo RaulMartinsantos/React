@@ -1,6 +1,5 @@
 import Container from "./container";
 import useTransaction from "../hooks/useTransactions";
-import TransactionContext from "../hooks/useTransactions";
 
 function TransactionTable() {
   const { transactions } = useTransaction();
