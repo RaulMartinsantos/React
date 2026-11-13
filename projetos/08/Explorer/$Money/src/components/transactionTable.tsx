@@ -1,29 +1,9 @@
-import { useEffect, useState } from "react";
-import api from "../services/api";
+import { useContext } from "react";
 import Container from "./container";
-
-interface Transaction {
-  id: number;
-  title: string;
-  amount: number;
-  type: string;
-  category: string;
-  createdAt: string;
-}
+import TransactionContext from "../../transactionContext";
 
 function TransactionTable() {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-
-  useEffect(() => {
-    api.get("/transactions").then((response) => {
-      console.log("Dados:", response.data);
-      console.log("Tipo:", typeof response.data);
-      console.log("Array:", Array.isArray(response.data));
-      console.log("Chaves:", Object.keys(response.data));
-
-      setTransactions(response.data.transactions);
-    });
-  }, []);
+  const transactions = useContext(TransactionContext);
 
   return (
     <Container className="mt-16">
@@ -40,7 +20,7 @@ function TransactionTable() {
         <tbody>
           {transactions.map((transaction) => (
             <tr key={transaction.id}>
-              <td className="bg-shape text-[1.3rem] text-text-title p-5">
+              <td className="bg-shape text-[1.3rem] text-text-title p-5 pl-7">
                 {transaction.title}
               </td>
 

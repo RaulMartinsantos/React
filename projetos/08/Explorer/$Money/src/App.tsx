@@ -1,6 +1,9 @@
 import Modal from "react-modal";
-import { useState } from "react";
+import { Children, useState } from "react";
 import Header from "./components/header";
+import TransactionContext, {
+  TransactionsProvider,
+} from "../transactionContext";
 import Dashboard from "./components/dashboard";
 import TransactionTable from "./components/transactionTable";
 import NewTransactionModal from "./components/newTransactionModal";
@@ -20,7 +23,7 @@ function App() {
   }
 
   return (
-    <>
+    <TransactionsProvider>
       <Header onClick={handleOpenNewTransactionModal} />
       <Dashboard />
       <NewTransactionModal
@@ -28,7 +31,7 @@ function App() {
         isClosed={handleCloseNewTransactionModal}
       />
       <TransactionTable />
-    </>
+    </TransactionsProvider>
   );
 }
 

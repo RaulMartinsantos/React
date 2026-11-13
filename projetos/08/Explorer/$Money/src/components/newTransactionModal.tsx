@@ -1,7 +1,8 @@
 import Modal from "react-modal";
 import api from "../services/api";
 import RadioBox from "./radioBox";
-import { useState, type SubmitEvent } from "react";
+import TransactionContext from "../../transactionContext";
+import { useState, useContext, type SubmitEvent } from "react";
 import { CircleArrowDown, CircleArrowUp, X } from "lucide-react";
 
 interface NewTransactionModalProps {
@@ -14,10 +15,14 @@ function NewTransactionModal({
   isClosed,
   ...props
 }: NewTransactionModalProps) {
-  const [type, setType] = useState<"deposit" | "withdraw">("deposit");
+  const [type, setType] = useState<"deposit" | "withdraw" | undefined>(
+    undefined,
+  );
   const [value, setValue] = useState(0);
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
+
+  const transactions = useContext(TransactionContext)
 
   async function handleCreateNewTransaction(e: SubmitEvent) {
     e.preventDefault();
@@ -66,21 +71,21 @@ function NewTransactionModal({
 
         <div className="mt-4 grid grid-cols-2 gap-2 max-sm:grid-cols-1">
           <RadioBox
-            variant="deposit"
+            transactionType="deposit"
             label="Entrada"
             icon={CircleArrowUp}
             iconClassName="text-green"
+            currentState={type}
             onClick={() => setType("deposit")}
-            isSelected={type === "deposit"}
           />
 
           <RadioBox
-            variant="withdraw"
+            transactionType="withdraw"
             label="Saida"
             icon={CircleArrowDown}
             iconClassName="text-red"
+            currentState={type}
             onClick={() => setType("withdraw")}
-            isSelected={type === "withdraw"}
           />
         </div>
 

@@ -1,44 +1,50 @@
-import { type LucideIcon } from "lucide-react";
+import { type LucideIcon, type LucideProps } from "lucide-react";
+import { tv, type VariantProps} from "tailwind-variants";
+export type TransactionType = "deposit" | "withdraw" | undefined;
 
-export type TransactionType = "deposit" | "withdraw";
+const radioBoxVariants = tv({
+  base: `
+  border-border-color border rounded-sm flex items-center justify-center
+  hover:border-border-hover transition-colors ease-linear h-16
+  `,
+  variants: {
+    variant: {
+      deposit: "border-green-500 bg-green-500/10 hover:border-green-500",
+      withdraw: "border-red-500 bg-red-500/10 hover:border-red-500",
+    },
+  },
+});
 
-interface RadioBoxProps extends React.ComponentProps<"button"> {
+interface RadioBoxProps
+  extends
+    VariantProps<typeof radioBoxVariants>,
+    React.ComponentProps<"button"> {
   label: string;
   onClick: () => void;
-  iconClassName?: string;
+  iconClassName?: LucideProps["className"];
+  currentState: TransactionType;
   icon?: LucideIcon;
-  isSelected: boolean;
-  variant: TransactionType;
+  transactionType: TransactionType;
 }
 
 function RadioBox({
   onClick,
   label,
   iconClassName,
+  className,
+  currentState,
   icon: Icon,
-  isSelected,
-  variant,
+  transactionType,
   ...props
 }: RadioBoxProps) {
-  const styles = {
-    deposit: isSelected
-      ? "border-green-500 bg-green-500/10"
-      : "border-border-color hover:border-green-500",
-
-    withdraw: isSelected
-      ? "border-red-500 bg-red-500/10"
-      : "border-border-color hover:border-red-500",
-  };
-
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`
-        h-16 border rounded-sm flex items-center justify-center
-        transition-colors ease-linear
-        ${styles[variant]}
-      `}
+      className={radioBoxVariants({
+        variant: currentState === transactionType ? currentState : undefined,
+        className,
+      })}
       {...props}
     >
       {Icon && <Icon className={iconClassName} />}

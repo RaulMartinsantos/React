@@ -6,9 +6,9 @@ function Dashboard() {
     <Container>
       <main
         className={`
-        max-w-[1120px] m-auto grid grid-cols-3
-        gap-8 -mt-26 pt-7 max-sm:gap-2
-      `}
+          max-w-[1120px] m-auto grid grid-cols-3
+          gap-8 -mt-26 pt-7 max-sm:gap-2
+        `}
       >
         <Summary />
       </main>

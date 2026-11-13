@@ -10,7 +10,7 @@ function Container({ children, className = "" }: ContainerProps) {
     <div
       className={`
         mx-auto w-full max-w-[1120px] px-8 ${className}
-    `}
+      `}
     >
       {children}
     </div>

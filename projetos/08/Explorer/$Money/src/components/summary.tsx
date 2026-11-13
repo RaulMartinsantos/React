@@ -1,6 +1,11 @@
 import { CircleArrowUp, CircleArrowDown, DollarSign } from "lucide-react";
+import TransactionContext from "../../transactionContext";
+import { useContext } from "react";
 
 function Summary() {
+  const transactions = useContext(TransactionContext);
+  console.log(transactions)
+
   return (
     <>
       <div
