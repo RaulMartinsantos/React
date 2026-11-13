@@ -32,7 +32,8 @@ function SummaryTotal({ withdraw, deposit, className }: SummaryTotalProps) {
         <p>Total</p>
         <DollarSign />
       </header>
-      <strong className="block mt-4 text-[2rem] max-sm:text-[1.5rem] leading-12 whitespace-nowrap">
+
+      <strong className="flex items-center justify-center mt-4 text-[2rem] max-sm:text-[1.5rem] leading-12 whitespace-nowrap">
         {new Intl.NumberFormat("pt-br", {
           style: "currency",
           currency: "brl",
