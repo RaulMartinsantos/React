@@ -41,3 +41,8 @@ button {
 button {
   cursor: pointer;
 }
+
+.logo {
+  height: auto;
+  width: auto;
+}

@@ -1,37 +1,45 @@
+"use client";
+
 import { FiX } from "react-icons/fi";
 import { FaGithub } from "react-icons/fa";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { tv, type VariantProps } from "tailwind-variants";
 
-const singInButtonVariants = tv({
+const signInButtonVariants = tv({
   base: `
     h-12 bg-gray-850 flex items-center justify-center px-6 rounded-[3rem]
-  text-white font-bold hover:brightness-80 transition-[filter] ease-linear
+    font-bold text-white  hover:brightness-80 transition-[filter] ease-linear
   `,
 });
 
-interface SingInButtonProps
+interface SignInButtonProps
   extends
     React.ComponentProps<"button">,
-    VariantProps<typeof singInButtonVariants> {}
+    VariantProps<typeof signInButtonVariants> {}
 
-function SingInButton({ className, ...props }: SingInButtonProps) {
-  const isUserLoggedIn = true;
+function SingInButton({ className, ...props }: SignInButtonProps) {
+  const { data: session, status } = useSession();
 
-  return isUserLoggedIn ? (
+  if (status === "loading") {
+    return null;
+  }
+
+  return session ? (
     <button
       type="button"
       {...props}
-      className={singInButtonVariants({ className })}
+      className={signInButtonVariants({ className })}
     >
       <FaGithub color="#04d361" className="h-[20px] w-[20px] mr-4" />
-      Raul Santos
-      <FiX color="#737380" className="ml-4" />
+      {session.user?.name}
+      <FiX color="#737380" className="ml-4" onClick={() => signOut()} />
     </button>
   ) : (
     <button
       type="button"
       {...props}
-      className={singInButtonVariants({ className })}
+      className={signInButtonVariants({ className })}
+      onClick={() => signIn("github")}
     >
       <FaGithub color="#eba417" className="h-[20px] w-[20px] mr-4" />
       Sing in with Github

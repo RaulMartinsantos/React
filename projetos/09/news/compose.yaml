@@ -1,0 +1,13 @@
+services:
+  fauna:
+    image: fauna/faunadb:latest
+    container_name: fauna-local
+    ports:
+      - "8443:8443"
+      - "8084:8084"
+    volumes:
+      - fauna_data:/var/lib/faunadb
+    restart: unless-stopped
+
+volumes:
+  fauna_data:
