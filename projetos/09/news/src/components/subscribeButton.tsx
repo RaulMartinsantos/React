@@ -1,4 +1,8 @@
+"use client";
+
+import { useSession, signIn } from "next-auth/react";
 import { tv, type VariantProps } from "tailwind-variants";
+import api from "../service/api";
 
 const subscribeButtonVariants = tv({
   base: `
@@ -10,15 +14,39 @@ interface SubscribeButtonProps
   extends
     React.ComponentProps<"button">,
     VariantProps<typeof subscribeButtonVariants> {
-      priceId: string
+  priceId: string;
+}
+
+function SubscribeButton({
+  className,
+  priceId,
+  ...props
+}: SubscribeButtonProps) {
+  const { data: session } = useSession();
+  async function handleSubscribe() {
+    if (!session) {
+      return signIn("github");
     }
 
-function SubscribeButton({ className, priceId, ...props }: SubscribeButtonProps) {
+    try {
+      const response = await api.post("/subscribe");
+
+      const { url } = response.data;
+
+      if (!url) {
+        throw new Error("URL de checkout não encontrada");
+      }
+
+      window.location.href = url;
+    } catch (err) {}
+  }
+
   return (
     <button
       type="button"
       {...props}
       className={subscribeButtonVariants({ className })}
+      onClick={handleSubscribe}
     >
       Subscribe Now
     </button>
