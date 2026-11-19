@@ -25,20 +25,25 @@ function SubscribeButton({
   const { data: session } = useSession();
   async function handleSubscribe() {
     if (!session) {
-      return signIn("github");
+      signIn("github");
+      return;
     }
 
     try {
       const response = await api.post("/subscribe");
 
-      const { url } = response.data;
+      const url = response.data.url;
+
+      console.log(response.data);
 
       if (!url) {
-        throw new Error("URL de checkout não encontrada");
+        throw new Error("URL não encontrada");
       }
 
       window.location.href = url;
-    } catch (err) {}
+    } catch (err) {
+      console.error("Falha no handleSubscribe:", err);
+    }
   }
 
   return (

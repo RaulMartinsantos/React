@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 export async function POST() {
   try {
     const checkoutSession = await stripe.checkout.sessions.create({
-      allowed_payment_method_types: ["card"],
       billing_address_collection: "required",
       line_items: [{ price: "price_1Ucx4N4hJNCd6jTtQwRxJImn", quantity: 1 }],
       mode: "subscription",
@@ -13,9 +12,7 @@ export async function POST() {
       cancel_url: process.env.STRIPE_CANCEL_URL,
     });
 
-    return NextResponse.json({
-      url: checkoutSession.url,
-    });
+    return NextResponse.json({ url: checkoutSession.url });
   } catch (err) {
     console.log(err);
 

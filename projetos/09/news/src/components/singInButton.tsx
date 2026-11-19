@@ -2,8 +2,8 @@
 
 import { FiX } from "react-icons/fi";
 import { FaGithub } from "react-icons/fa";
-import { signIn, signOut, useSession } from "next-auth/react";
 import { tv, type VariantProps } from "tailwind-variants";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const signInButtonVariants = tv({
   base: `

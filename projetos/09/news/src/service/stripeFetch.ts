@@ -4,7 +4,7 @@ import stripe from "../service/stripe";
 export default async function stripeFetchApi() {
   "use cache";
   cacheLife({
-    stale: 300,
+    stale: 500,
     revalidate: 60,
     expire: 3600,
   });
